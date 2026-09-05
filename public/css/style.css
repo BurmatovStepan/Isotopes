@@ -42,17 +42,17 @@ p {
 }
 
 body {
-    width: 100%;
     max-width: 430px;
-    min-height: 100vh;
+    height: 100vh;
     margin: 0 auto;
+    overflow: hidden;
 }
 
 .page {
     position: relative;
     display: flex;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     padding: 16px 20px;
     flex-direction: column;
     background-color: var(--surface-0);
@@ -265,7 +265,7 @@ body {
 }
 
 .isotope-card__image {
-    height: 120px;
+    height: 150px;
     object-fit: cover;
 }
 
@@ -274,6 +274,7 @@ body {
 }
 
 .isotope-card .like {
+    margin-bottom: 8px;
     gap: 4px;
 }
 
