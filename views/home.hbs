@@ -1,0 +1,49 @@
+{{#> Base
+  title="Изотопы"
+  pageClass="isotope"
+}}
+<video class="isotope__video" src="{{fullVideoUrl}}" autoplay loop muted></video>
+
+<div class="isotope__overlay">
+  <div class="isotope__info">
+    <h1 class="isotope__name">{{name}}</h1>
+
+    <div class="isotope__half-life half-life-display">
+      <h4 class="half-life-display__label">Период полураспада:
+        <span class="half-life-display__value">{{halfLifeFormatted}}</span>
+      </h4>
+    </div>
+
+    <details class="isotope__note note">
+      <summary class="note__summary">
+        <h4 class="note__header">Примечание</h4>
+        <img src="/icons/chevron-down.svg" class="note__icon">
+      </summary>
+      <p class="note__content">{{note}}</p>
+    </details>
+
+  </div>
+
+  <div class="isotope__actions actions">
+    <div class="actions__like like">
+      <button class="like__button">
+        {{#if isLiked}}
+        <img src="/icons/like-solid.svg" class="like__icon">
+        {{else}}
+        <img src="/icons/like.svg" class="like__icon">
+        {{/if}}
+      </button>
+      <h2 class="like__label">{{likeCount}}</h2>
+    </div>
+    <a href="/home/{{id}}?next=true" class="actions__next next-button">
+      Дальше
+      <img src="/icons/chevrons-right.svg" class="next-button__icon">
+    </a>
+  </div>
+
+  {{> NavigationBar
+    class="isotope__navigation"
+    currentUrl="/home"
+  }}
+</div>
+{{/Base}}
