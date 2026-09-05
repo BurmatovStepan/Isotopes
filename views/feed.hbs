@@ -8,6 +8,7 @@
       parameters=(hash
         type="number"
         name="maxHalfLife"
+        value=maxHalfLife
         placeholder="Максимальный период полураспада в секундах"
         max=9007199254740991
         min=0
@@ -20,8 +21,8 @@
 
     <li class="feed__item">
       {{> IsotopeCard
-            isotope=this
-          }}
+        isotope=this
+      }}
     </li>
     {{/each}}
   </ul>
