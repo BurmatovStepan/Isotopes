@@ -22,9 +22,27 @@ async function bootstrap() {
         return options.hash;
     });
 
+    hbs.registerHelper('array', (...args: unknown[]) => {
+        return args.slice(0, -1);
+    });
+
+    hbs.registerHelper('pluck', (array: Record<string, unknown>[], key: string) => {
+        if (!Array.isArray(array)) {
+            return []
+        }
+
+        return array.map(item => item[key]);
+    });
+
     hbs.registerHelper('eq', (a: unknown, b: unknown) => {
         return a === b;
     });
+
+    hbs.registerHelper('includes', (array: Array<unknown>, item: unknown) => {
+        return array.includes(item);
+    });
+
+
 
     hbs.registerHelper('paths', () => [
         { url: '/home', imageUrl: '/icons/home.svg' },

@@ -8,18 +8,24 @@
   <div class="isotope__info">
     <h1 class="isotope__name">{{name}}</h1>
 
-    <div class="isotope__half-life half-life-display">
-      <h4 class="half-life-display__label">Период полураспада:
-        <span class="half-life-display__value">{{halfLifeFormatted}}</span>
-      </h4>
-    </div>
+    {{> PropertyDisplay
+      class="isotope__half-life"
+      label="Период полураспада:"
+      propertyValues=(array halfLifeFormatted)
+    }}
 
-    <details class="isotope__note note">
-      <summary class="note__summary">
-        <h4 class="note__header">Примечание</h4>
-        <img src="/icons/chevron-down.svg" class="note__icon">
+    {{> PropertyDisplay
+      class="isotope__radiation-type"
+      label="Распад:"
+      propertyValues=(pluck radiationTypes "name")
+    }}
+
+    <details class="isotope__description description" open>
+      <summary class="description__summary">
+        <h4 class="description__header">Описание</h4>
+        <img src="/icons/chevron-down.svg" class="description__icon">
       </summary>
-      <p class="note__content">{{note}}</p>
+      <p class="description__content">{{description}}</p>
     </details>
 
   </div>
