@@ -20,7 +20,6 @@
         "types": [
             "vitest/globals",
             "node",
-            "multer",
         ]
     }
 }
