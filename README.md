@@ -1,114 +1,128 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+<style>
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 32px;
+    }
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+    .image-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+    figcaption {
+        font-style: italic;
+        font-weight: 400;
+        font-size: 18px;
+        font-family: Times New Roman;
+    }
 
-## Description
+    hr {
+        width: 100%;
+        height: 1px;
+        background-color: #ebbcba;
+        border: none;
+        box-shadow: 0 0 4px rgba(235, 188, 186, 0.6);
+        opacity: 0.8;
+    }
+</style>
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ npm install
-```
-
-## Compile and run the project
-
-```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
-```
-
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Observability
-
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
-
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
-
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+<div class="wrapper">
+    <figure class="image-wrapper">
+        <img src="./media/demo/1.jpg">
+        <figcaption>1. Тема</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/2.png">
+        <figcaption>2. Figma &mdash; Лента</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/3.png">
+        <figcaption>3. Figma &mdash; Добавление</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/4.png">
+        <figcaption>4. Figma &mdash; Плитка</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/5.png">
+        <figcaption>5. Браузер &mdash; Лента</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/6.png">
+        <figcaption>6. Браузер &mdash; Добавление</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/7.png">
+        <figcaption>7. Браузер &mdash; Плитка</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/8.png">
+        <figcaption>8. Источник &mdash; GeigerBase (1)</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/9.png">
+        <figcaption>9. Источник &mdash; GeigerBase (2)</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/10.png">
+        <figcaption>10. Поиск &mdash; 1</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/11.png">
+        <figcaption>11. Поиск &mdash; 2</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/12.png">
+        <figcaption>12. Поиск &mdash; 3</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/13.jpg">
+        <figcaption>13. Response &mdash; imageUrl</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/14.jpg">
+        <figcaption>14. Response &mdash; videoUrl</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/15.jpg">
+        <figcaption>15. Код &mdash; Коллекция</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/1.jpg">
+        <figcaption>16. Код &mdash; imageUrl</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/17.jpg">
+        <figcaption>17. Код &mdash; videoUrl</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/18.jpg">
+        <figcaption>18. Код &mdash; Контроллер ленты</figcaption>
+    </figure>
+    <hr>
+    <figure class="image-wrapper">
+        <img src="./media/demo/19.jpg">
+        <figcaption>19. Код &mdash; Контроллеры добавления и плитки</figcaption>
+    </figure>
+</div>
