@@ -177,7 +177,8 @@ body {
     flex-direction: column;
 }
 
-.add__navigation {
+.add__navigation,
+.feed__navigation {
     margin-top: auto;
 }
 
@@ -224,7 +225,7 @@ body {
     border-radius: 8px;
 }
 
-.grid {
+.feed {
     display: flex;
     flex-direction: column;
 }

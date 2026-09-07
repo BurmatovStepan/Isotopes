@@ -1,17 +1,19 @@
 {{#> Base
   title="Коллекция"
-  pageClass="grid"
+  pageClass="feed"
 }}
 <section class="feed">
   <form method="get" class="feed__search search">
     {{> Field
       parameters=(hash
-        type="number"
+        type="text"
+        inputmode="numeric"
+        pattern="[0-9]+"
         name="maxHalfLife"
+        id="isotope-half-life"
+        placeholder="Максимальный период полураспада (нс.)"
         value=maxHalfLife
-        placeholder="Максимальный период полураспада в секундах"
-        max=9007199254740991
-        min=0
+        maxlength=27
       )
     }}
   </form>
@@ -29,7 +31,7 @@
 </section>
 
 {{> NavigationBar
-  class="grid__navigation"
+  class="feed__navigation"
   currentUrl="/feed"
 }}
 {{/Base}}

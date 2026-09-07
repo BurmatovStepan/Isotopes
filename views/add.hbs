@@ -20,15 +20,16 @@
 
   {{> Field
     class="form__half-life-field"
-    label="Период полураспада (сек.)"
+    label="Период полураспада (нс.)"
     parameters=(hash
-      type="number"
+      type="text"
+      inputmode="numeric"
+      pattern="[0-9]+"
       name="halfLife"
       id="isotope-half-life"
-      placeholder="Период в секундах"
+      placeholder="Период в наносекундах"
       value=halfLife
-      max=9007199254740991
-      min=0
+      maxlength=27
       required=""
     )
   }}
