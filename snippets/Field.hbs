@@ -1,8 +1,0 @@
-<div class="field {{class}}">
-  {{#if label}}
-  <label {{#if parameters.id}}for="{{parameters.id}}" {{/if}} class="field__label">
-    {{label}}
-  </label>
-  {{/if}}
-  <input {{#each parameters}} {{@key}}="{{this}}" {{/each}}>
-</div>

@@ -1,8 +1,0 @@
-<div class="textarea {{class}}">
-  {{#if label}}
-  <label {{#if parameters.id}}for="{{parameters.id}}" {{/if}} class="textarea__label">
-    {{label}}
-  </label>
-  {{/if}}
-  <textarea {{#each parameters}} {{@key}}="{{this}}" {{/each}}>{{value}}</textarea>
-</div>
