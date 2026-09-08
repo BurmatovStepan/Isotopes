@@ -4,16 +4,11 @@
   <img src="{{this.fullImageUrl}}" class="isotope-card__image">
 
   <div class="isotope-card__content">
-    <div class="isotope-card__like like">
-      <button class="like__button">
-        {{#if this.isLiked}}
-        <img src="/icons/like-solid.svg" class="like__icon">
-        {{else}}
-        <img src="/icons/like.svg" class="like__icon">
-        {{/if}}
-      </button>
-      <h5 class="like__label">{{this.likeCount}}</h5>
-    </div>
+    {{> Like
+      class="isotope-card__like"
+      isLiked=isLiked
+      likeCount=likeCount
+    }}
 
     <h3 class="isotope-card__name">{{this.name}}</h3>
     <p class="isotope-card__half-life">T&half;: {{this.halfLifeFormatted}}</p>

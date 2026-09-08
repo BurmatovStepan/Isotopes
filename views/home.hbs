@@ -31,16 +31,11 @@
   </div>
 
   <div class="isotope__actions actions">
-    <div class="actions__like like">
-      <button class="like__button">
-        {{#if isLiked}}
-        <img src="/icons/like-solid.svg" class="like__icon">
-        {{else}}
-        <img src="/icons/like.svg" class="like__icon">
-        {{/if}}
-      </button>
-      <h2 class="like__label">{{likeCount}}</h2>
-    </div>
+    {{> Like
+      class="actions__like"
+      isLiked=isLiked
+      likeCount=likeCount
+    }}
     <a href="/home/{{id}}?next=true" class="actions__next next-button">
       Дальше
       <img src="/icons/chevrons-right.svg" class="next-button__icon">

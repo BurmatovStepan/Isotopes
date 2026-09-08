@@ -436,3 +436,15 @@ input[type="file"]:hover::file-selector-button {
     width: 20px;
     accent-color: var(--primary);
 }
+
+.actions__like {
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 24px;
+}
+
+.isotope-card__like {
+    color: var(--text-main);
+    font-weight: 600;
+    font-size: 12px;
+}
