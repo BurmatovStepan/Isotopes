@@ -61,27 +61,27 @@
     <hr>
     <div align="center">
         <img src="./media/demo/13.jpg"><br>
-        <h4><i>13. Response &mdash; imageUrl</i></h4>
+        <h4><i>13. Response &mdash; Медиа</i></h4>
     </div>
     <hr>
     <div align="center">
         <img src="./media/demo/14.jpg"><br>
-        <h4><i>14. Response &mdash; videoUrl</i></h4>
+        <h4><i>14. Код &mdash; Коллекция</i></h4>
     </div>
     <hr>
     <div align="center">
         <img src="./media/demo/15.jpg"><br>
-        <h4><i>15. Код &mdash; Коллекция</i></h4>
+        <h4><i>15. Код &mdash; Шаблон (добавление)</i></h4>
     </div>
     <hr>
     <div align="center">
         <img src="./media/demo/16.jpg"><br>
-        <h4><i>16. Код &mdash; imageUrl</i></h4>
+        <h4><i>16. Код &mdash; Шаблон (плитка)</i></h4>
     </div>
     <hr>
     <div align="center">
         <img src="./media/demo/17.jpg"><br>
-        <h4><i>17. Код &mdash; videoUrl</i></h4>
+        <h4><i>17. Код &mdash; Шаблон (лента)</i></h4>
     </div>
     <hr>
     <div align="center">
