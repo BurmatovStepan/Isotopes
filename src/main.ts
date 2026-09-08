@@ -26,7 +26,7 @@ async function bootstrap() {
         return args.slice(0, -1);
     });
 
-    hbs.registerHelper('pluck', (array: Record<string, unknown>[], key: string) => {
+    hbs.registerHelper('pick', (array: Record<string, unknown>[], key: string) => {
         if (!Array.isArray(array)) {
             return []
         }

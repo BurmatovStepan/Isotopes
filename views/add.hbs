@@ -40,7 +40,7 @@
       {{#each RADIATION_TYPE}}
       <li class="radiation-type__item">
         <input type="checkbox" class="radiation-type__input" name="radiationTypes" id="radiation-type-{{this.id}}"
-          value="{{this.id}}" {{#if (includes (pluck ../radiationTypes "id") this.id)}}checked{{/if}}>
+          value="{{this.id}}" {{#if (includes (pick ../radiationTypes "id") this.id)}}checked{{/if}}>
         <label for="radiation-type-{{this.id}}" class="radiation-type__value-label">{{this.name}}</label>
       </li>
       {{/each}}

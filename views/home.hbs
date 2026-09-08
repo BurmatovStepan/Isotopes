@@ -17,7 +17,7 @@
     {{> PropertyDisplay
       class="isotope__radiation-type"
       label="Распад:"
-      propertyValues=(pluck radiationTypes "name")
+      propertyValues=(pick radiationTypes "name")
     }}
 
     <details class="isotope__description description" open>
