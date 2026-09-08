@@ -60,29 +60,37 @@
     )
   }}
 
-  {{> Field
-    class="form__video-field"
-    label="Видео"
-    parameters=(hash
-      type="file"
-      name="video"
-      id="isotope-video"
-      accept="video/*"
-      required=""
-    )
-  }}
+  <div class="form__media-wrapper">
+    {{> Field
+      class="form__video-field"
+      label="Видео"
+      parameters=(hash
+        type="file"
+        name="video"
+        id="isotope-video"
+        accept="video/*"
+        required=""
+      )
+    }}
 
-  {{> Field
-    class="form__image-field"
-    label="Фото"
-    parameters=(hash
-      type="file"
-      name="image"
-      id="isotope-image"
-      accept=".png, .jpg, .jpeg"
-      required=""
-    )
-  }}
+    <video src="{{fullVideoUrl}}" class="form__media-preview" controls muted>
+  </div>
+
+  <div class="form__media-wrapper">
+    {{> Field
+      class="form__image-field"
+      label="Фото"
+      parameters=(hash
+        type="file"
+        name="image"
+        id="isotope-image"
+        accept=".png, .jpg, .jpeg"
+        required=""
+      )
+    }}
+
+    <img src="{{fullImageUrl}}" class="form__media-preview">
+  </div>
 
   <button class="form__submit" type="button">Сохранить</button>
 </form>

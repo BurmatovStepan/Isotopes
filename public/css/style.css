@@ -184,8 +184,10 @@ body {
 
 .form {
     display: flex;
+    padding-bottom: 20px;
     flex-direction: column;
     gap: 20px;
+    overflow-y: auto;
 }
 
 .form__media-field {
@@ -447,4 +449,26 @@ input[type="file"]:hover::file-selector-button {
     color: var(--text-main);
     font-weight: 600;
     font-size: 12px;
+}
+
+.form__media-wrapper {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: 12px;
+
+    box-shadow: var(--box-shadow-small);
+    transition: box-shadow var(--transition-short) var(--transition-timing-function);
+}
+
+.form__media-wrapper:hover {
+    box-shadow: var(--box-shadow-main);
+}
+
+.form__media-preview {
+    height: 200px;
+    background-color: var(--surface-field);
+    border: 1px solid var(--border-main);
+    border-radius: 8px;
+    object-fit: contain;
 }
