@@ -5,46 +5,51 @@
 <video class="isotope__video" src="{{fullVideoUrl}}" autoplay loop muted></video>
 
 <div class="isotope__overlay">
-  <div class="isotope__info">
-    <h1 class="isotope__name">{{name}}</h1>
-
-    {{> PropertyDisplay
-      class="isotope__half-life"
-      label="Период полураспада:"
-      propertyValues=(array halfLifeFormatted)
-    }}
-
-    {{> PropertyDisplay
-      class="isotope__radiation-type"
-      label="Распад:"
-      propertyValues=(pick radiationTypes "name")
-    }}
-
-    <details class="isotope__description description" open>
-      <summary class="description__summary">
-        <h4 class="description__header">Описание</h4>
-        <img src="/icons/chevron-down.svg" class="description__icon">
-      </summary>
-      <p class="description__content">{{description}}</p>
-    </details>
-
-  </div>
-
-  <div class="isotope__actions actions">
+  <div class="isotope__meta meta">
     {{> Like
-      class="actions__like"
+      class="meta__like"
       isLiked=isLiked
       likeCount=likeCount
     }}
-    <a href="/home/{{id}}?next=true" class="actions__next next-button">
-      Дальше
+
+    <div class="meta__info">
+      {{> PropertyDisplay
+        class="isotope__half-life"
+        label="Период полураспада"
+        propertyValues=(array halfLifeFormatted)
+      }}
+
+      {{> PropertyDisplay
+        class=radiationTypeClass
+        label="α-распад"
+        propertyValues=(array radiationTypeValue)
+      }}
+    </div>
+
+    <a href="/isotopes/home/{{id}}?next=true" class="meta__next next-button">
       <img src="/icons/chevrons-right.svg" class="next-button__icon">
     </a>
   </div>
 
+  <div class="isotope__info">
+    <h1 class="isotope__name">{{name}}</h1>
+
+    <div class="isotope__description description">
+      <p class="description__content">{{ description }}</p>
+
+      <label class="description__action">
+        <input type="checkbox" class="description__toggle">
+
+        <div class="description__more">Подробнее</div>
+        <div class="description__less">Скрыть</div>
+      </label>
+    </div>
+
+  </div>
+
   {{> NavigationBar
     class="isotope__navigation"
-    currentUrl="/home"
+    currentUrl="/isotopes/home"
   }}
 </div>
 {{/Base}}

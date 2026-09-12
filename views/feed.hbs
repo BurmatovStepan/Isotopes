@@ -4,18 +4,10 @@
 }}
 <section class="feed">
   <form method="get" class="feed__search search">
-    {{> Field
-      parameters=(hash
-        type="text"
-        inputmode="numeric"
-        pattern="[0-9]+"
-        name="maxHalfLife"
-        id="isotope-half-life"
-        placeholder="Максимальный период полураспада (нс.)"
-        value=maxHalfLife
-        maxlength=27
-      )
-    }}
+    <div class="search__value-display" data-search-value>T&half;, макс. (нс)</div>
+    <button class="search__find" type="submit">Найти</button>
+    <input class="search__slider" name="maxHalfLifeExponent" type="range" min="-1" max="27" step="1"
+      value="{{maxHalfLifeExponent}}" data-search-slider>
   </form>
 
   <ul class="feed__list">
@@ -30,8 +22,32 @@
   </ul>
 </section>
 
+<script defer>
+  const BASE = 10n;
+  const DISPLAY_PLACEHOLDER = "T½, макс. (нс)";
+
+  const display = document.querySelector('[data-search-value]');
+  const range = document.querySelector('[data-search-slider]');
+
+  range.addEventListener('input', updateOutput);
+
+  function updateOutput() {
+    const value = range.value;
+
+    if (value === "-1") {
+      display.textContent = DISPLAY_PLACEHOLDER;
+      return;
+    }
+
+    display.textContent = BASE ** BigInt(value);
+  }
+
+  updateOutput();
+</script>
+
+
 {{> NavigationBar
   class="feed__navigation"
-  currentUrl="/feed"
+  currentUrl="/isotopes/feed"
 }}
 {{/Base}}

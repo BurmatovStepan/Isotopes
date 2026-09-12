@@ -45,9 +45,9 @@ async function bootstrap() {
 
 
     hbs.registerHelper('paths', () => [
-        { url: '/home', imageUrl: '/icons/home.svg' },
-        { url: '/add', imageUrl: '/icons/circle-plus.svg' },
-        { url: '/feed', imageUrl: '/icons/grid.svg' },
+        { url: '/isotopes/home', imageUrl: '/icons/home.svg' },
+        { url: '/isotopes/add', imageUrl: '/icons/circle-plus.svg' },
+        { url: '/isotopes/feed', imageUrl: '/icons/grid.svg' },
     ]);
 
     await app.listen(3000);

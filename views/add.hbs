@@ -3,63 +3,6 @@
   pageClass="add"
 }}
 <form method="post" enctype="multipart/form-data" class="form">
-  {{> Field
-    class="form__name-field"
-    label="Название изотопа"
-    parameters=(hash
-      type="text"
-      name="name"
-      id="isotope-name"
-      placeholder="Название"
-      value=name
-      maxlength=20
-      minlength=5
-      required=""
-    )
-  }}
-
-  {{> Field
-    class="form__half-life-field"
-    label="Период полураспада (нс.)"
-    parameters=(hash
-      type="text"
-      inputmode="numeric"
-      pattern="[0-9]+"
-      name="halfLife"
-      id="isotope-half-life"
-      placeholder="Период в наносекундах"
-      value=halfLife
-      maxlength=27
-      required=""
-    )
-  }}
-
-  <div class="form__radiation-type-field radiation-type">
-    <span class="radiation-type__label">Распад</span>
-    <ul class="radiation-type__list">
-      {{#each RADIATION_TYPE}}
-      <li class="radiation-type__item">
-        <input type="checkbox" class="radiation-type__input" name="radiationTypes" id="radiation-type-{{this.id}}"
-          value="{{this.id}}" {{#if (includes (pick ../radiationTypes "id") this.id)}}checked{{/if}}>
-        <label for="radiation-type-{{this.id}}" class="radiation-type__value-label">{{this.name}}</label>
-      </li>
-      {{/each}}
-    </ul>
-  </div>
-
-  {{> Textarea
-    class="form__description-field"
-    label="Описание"
-    value=description
-    parameters=(hash
-      name="description"
-      id="isotope-description"
-      placeholder="Описание"
-      maxlength=200
-      required=""
-    )
-  }}
-
   <div class="form__media-wrapper">
     {{> Field
       class="form__video-field"
@@ -92,11 +35,64 @@
     <img src="{{fullImageUrl}}" class="form__media-preview">
   </div>
 
+  {{> Field
+    class="form__name-field"
+    label="Название изотопа"
+    parameters=(hash
+      type="text"
+      name="name"
+      id="isotope-name"
+      placeholder="Название"
+      value=name
+      maxlength=20
+      minlength=5
+      required=""
+    )
+  }}
+
+  {{> Field
+    class="form__half-life-field"
+    label="Период полураспада (нс.)"
+    parameters=(hash
+      type="text"
+      inputmode="numeric"
+      pattern="[0-9]+"
+      name="halfLife"
+      id="isotope-half-life"
+      placeholder="Период в наносекундах"
+      value=halfLife
+      maxlength=27
+      required=""
+    )
+  }}
+
+  <div class="form__radiation-type-field radiation-type">
+    <span class="radiation-type__label">α-распад</span>
+    <div class="radiation-type__control">
+      <div class="radiation-type__prompt">Происходит α-распад</div>
+      <div class="radiation-type__divider"></div>
+      <input type="checkbox" class="radiation-type__input" {{#if isAlpha}}checked{{/if}}>
+    </div>
+  </div>
+
+  {{> Textarea
+    class="form__description-field"
+    label="Описание"
+    value=description
+    parameters=(hash
+      name="description"
+      id="isotope-description"
+      placeholder="Описание"
+      maxlength=200
+      required=""
+    )
+  }}
+
   <button class="form__submit" type="button">Сохранить</button>
 </form>
 
 {{> NavigationBar
   class="add__navigation"
-  currentUrl="/add"
+  currentUrl="/isotopes/add"
 }}
 {{/Base}}
