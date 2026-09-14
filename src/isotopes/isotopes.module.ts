@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { Isotope } from '../isotopes/entities/isotope.entity.js';
 import {
     IsotopesAddController,
     IsotopesFeedController,
@@ -8,6 +10,7 @@ import {
 import { IsotopesService } from './isotopes.service.js';
 
 @Module({
+    imports: [TypeOrmModule.forFeature([Isotope])],
     controllers: [IsotopesHomeController, IsotopesAddController, IsotopesFeedController],
     providers: [IsotopesService],
 })

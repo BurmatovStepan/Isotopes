@@ -22,5 +22,26 @@ services:
       - ./minio-data:/data
     command: server /data --console-address ":9001"
 
+  postgres:
+    container_name: postgres
+    image: postgres:18-alpine
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: isotope_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+  adminer:
+    container_name: adminer
+    image: adminer:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+
 volumes:
   portainer_data:
+  postgres_data:

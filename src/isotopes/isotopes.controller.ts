@@ -1,21 +1,10 @@
-import {
-    Controller,
-    Get,
-    NotFoundException,
-    Param,
-    Query,
-    Render
-} from '@nestjs/common';
+import { Controller, Get, NotFoundException, Param, Query, Render } from '@nestjs/common';
+
+import { IsotopeStatus } from './entities/isotope.entity.js';
 
 export const MINIO_URL = 'http://localhost:9000/isotopes';
 
 export const MAX_HALF_LIFE = 1_000_000_000_000_000_000_000_000_000n;
-
-enum IsotopeStatus {
-    Draft = 0,
-    Published,
-    Deleted,
-};
 
 export const USER = [
     { id: 1 },

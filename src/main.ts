@@ -42,8 +42,6 @@ async function bootstrap() {
         return array.includes(item);
     });
 
-
-
     hbs.registerHelper('paths', () => [
         { url: '/isotopes/home', imageUrl: '/icons/home.svg' },
         { url: '/isotopes/add', imageUrl: '/icons/circle-plus.svg' },
