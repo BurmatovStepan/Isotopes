@@ -4,7 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Isotope } from '../isotopes/entities/isotope.entity.js';
 import {
     // IsotopesAddController,
-    // IsotopesFeedController,
+    IsotopesFeedController,
     IsotopesHomeController
 } from './isotopes.controller.js';
 import { IsotopesService } from './isotopes.service.js';
@@ -13,7 +13,7 @@ import { User } from './entities/user.entity.js';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Isotope, Like, User])],
-    controllers: [IsotopesHomeController,/*  IsotopesAddController, IsotopesFeedController*/] ,
+    controllers: [IsotopesHomeController, /* IsotopesAddController, */ IsotopesFeedController] ,
     providers: [IsotopesService],
 })
 export class IsotopesModule { }
