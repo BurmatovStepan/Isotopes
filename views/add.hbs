@@ -16,7 +16,14 @@
       )
     }}
 
-    <video src="{{fullVideoUrl}}" class="form__media-preview" controls muted>
+    {{> IsotopeVideo
+      videoUrl=fullVideoUrl
+      options=(hash
+        class="form__media-preview"
+        controls=""
+        muted=""
+      )
+    }}
   </div>
 
   <div class="form__media-wrapper">
@@ -32,7 +39,12 @@
       )
     }}
 
-    <img src="{{fullImageUrl}}" class="form__media-preview">
+    {{> IsotopeImage
+      imageUrl=this.fullImageUrl
+      options=(hash
+        class="form__media-preview"
+      )
+    }}
   </div>
 
   {{> Field

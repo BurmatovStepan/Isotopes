@@ -2,7 +2,16 @@
   title="Изотопы"
   pageClass="isotope"
 }}
-<video class="isotope__video" src="{{fullVideoUrl}}" autoplay loop muted></video>
+
+{{> IsotopeVideo
+  videoUrl=fullVideoUrl
+  options=(hash
+    class="isotope__video"
+    autoplay=""
+    loop=""
+    muted=""
+  )
+}}
 
 <div class="isotope__overlay">
   <div class="isotope__meta meta">

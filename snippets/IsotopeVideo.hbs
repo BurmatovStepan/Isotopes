@@ -1,0 +1,5 @@
+<video
+  src="{{#if videoUrl}}{{videoUrl}}{{else}}/assets/isotope.mp4{{/if}}"
+  onerror="this.src='/assets/isotope.mp4'"
+  {{#each options}}{{@key}}="{{this}}"{{/each}}
+></video>

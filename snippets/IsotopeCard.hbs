@@ -1,7 +1,12 @@
 <div class="isotope-card {{className}}">
   <a href="/isotopes/home/{{this.id}}" class="isotope-card__link"></a>
 
-  <img src="{{this.fullImageUrl}}" class="isotope-card__image">
+  {{> IsotopeImage
+    imageUrl=this.fullImageUrl
+    options=(hash
+      class="isotope=card__image"
+    )
+  }}
 
   <div class="isotope-card__content">
     {{> Like

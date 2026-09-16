@@ -1,0 +1,5 @@
+<img
+  src="{{#if imageUrl}}{{imageUrl}}{{else}}/assets/isotope.png{{/if}}"
+  onerror="this.src='/assets/isotope.png'"
+  {{#each options}}{{@key}}="{{this}}"{{/each}}
+>
