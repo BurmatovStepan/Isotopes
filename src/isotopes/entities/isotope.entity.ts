@@ -23,11 +23,15 @@ export enum IsotopeStatus {
 
 const bigintTransformer = {
     to(value: bigint | null): string | null {
-        return value === null ? null : value.toString();
+        return value === null || value === undefined
+            ? null
+            : value.toString();
     },
 
     from(value: string | null): bigint | null {
-        return value === null ? null : BigInt(value);
+        return value === null
+            ? null
+            : BigInt(value);
     },
 };
 

@@ -1,7 +1,17 @@
+import { Transform } from 'class-transformer';
+import {
+    IsBoolean,
+    IsNotEmpty,
+    IsString,
+    registerDecorator,
+    ValidationOptions
+} from 'class-validator';
+import { LessThanOrEqual, MoreThan, Repository } from 'typeorm';
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { Isotope, IsotopeStatus } from './entities/isotope.entity.js';
-import { LessThanOrEqual, MoreThan, Repository } from 'typeorm';
 import { Like } from './entities/like.entity.js';
 
 const MINIO_URL = 'http://localhost:9000/isotopes';
@@ -28,6 +38,48 @@ export type IsotopeDTO = {
     isLiked: boolean;
     isAuthor: boolean;
 };
+
+export function IsBigInt(validationOptions?: ValidationOptions) {
+    return function (object: object, propertyName: string) {
+        registerDecorator({
+            name: 'isBigInt',
+            target: object.constructor,
+            propertyName: propertyName,
+            options: validationOptions,
+            validator: {
+                validate(value: any) {
+                    return typeof value === 'bigint';
+                },
+            },
+        });
+    };
+}
+
+export class IsotopePublishDTO {
+    @IsString()
+    name: string;
+
+    @Transform(({ value }) => {
+        if (value === undefined || value === null || value === '') return undefined;
+
+        try {
+            return BigInt(value);
+        } catch {
+            return Symbol('INVALID_BIGINT');
+        }
+    })
+    @IsNotEmpty()
+    @IsBigInt({ message: 'halfLife must be a valid positive integer' })
+    halfLife: bigint;
+
+    @Transform(({ value }) => value === 'on')
+    @IsBoolean()
+    isAlpha: boolean = false;
+
+    @IsString()
+    description: string;
+};
+
 
 export type IsotopeView = Isotope & {
     likeCount: number;
@@ -218,6 +270,50 @@ export class IsotopesService {
             };
             return toIsotopeView(dto);
         });
+    }
+
+    async getDraft(
+        userId: number,
+    ): Promise<IsotopeView | null> {
+        const draft = await this.isotopeRepository.findOne({
+            where: {
+                status: IsotopeStatus.Draft,
+                author: {
+                    id: userId,
+                },
+            },
+        });
+
+        if (!draft) return null;
+
+        const dto = await this.assembleDTO(draft, userId);
+        return toIsotopeView(dto);
+    }
+
+    async createDraft(
+        userId: number,
+    ): Promise<void> {
+        const draft = this.isotopeRepository.create({
+            status: IsotopeStatus.Draft,
+            author: {
+                id: userId,
+            },
+        });
+
+        await this.isotopeRepository.save(draft);
+    }
+
+    async publishDraft(
+        draftId: number,
+        dto: IsotopePublishDTO,
+    ): Promise<void> {
+        await this.isotopeRepository.update({
+            id: draftId,
+        }, {
+            ...dto,
+            status: IsotopeStatus.Published,
+            publishedAt: new Date(),
+        })
     }
 
     private async assembleDTO(isotope: Isotope, currentUserId?: number): Promise<IsotopeDTO> {

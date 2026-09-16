@@ -219,7 +219,6 @@ body {
 }
 
 .form__submit {
-    max-width: 120px;
     padding: 4px 8px;
     align-self: end;
     color: var(--primary);

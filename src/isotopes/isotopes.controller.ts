@@ -1,14 +1,29 @@
-import { Controller, Get, NotFoundException, Param, ParseIntPipe, Query, Render } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Get,
+    HttpStatus,
+    NotFoundException,
+    Param,
+    ParseIntPipe,
+    Post,
+    Query,
+    Redirect,
+    Render,
+    Res
+} from '@nestjs/common';
 
-import { IsotopesService } from './isotopes.service.js';
+import { IsotopePublishDTO, IsotopesService as IsotopeService } from './isotopes.service.js';
 
-const CURRENT_USER_ID = 1;
+import type { Response } from 'express';
+
+const CURRENT_USER_ID = 2;
 
 export const MINIO_URL = 'http://localhost:9000/isotopes';
 
 @Controller('isotopes/home')
 export class IsotopesHomeController {
-    constructor(private readonly isotopeService: IsotopesService) { }
+    constructor(private readonly isotopeService: IsotopeService) { }
 
     @Get('')
     @Render('home')
@@ -46,26 +61,47 @@ export class IsotopesHomeController {
 }
 
 
+@Controller('isotopes/add')
+export class IsotopesAddController {
+    constructor(private readonly isotopeService: IsotopeService) { }
 
-// @Controller('isotopes/add')
-// export class IsotopesAddController {
-//     @Get()
-//     @Render('add')
-//     fetchDraft() {
-//         const draftIsotope = ISOTOPE.find(isotope => isotope.status === IsotopeStatus.Draft);
-//         if (!draftIsotope) {
-//             throw new NotFoundException('Черновик не найден');
-//         }
+    @Get()
+    async fetchDraft(@Res() res: Response) {
+        const draft = await this.isotopeService.getDraft(CURRENT_USER_ID);
 
-//         return {
-//             ...formatIsotope(draftIsotope),
-//         }
-//     }
-// }
+        if (draft) {
+            return res.render('publish', draft);
+        }
+
+        return res.render('add');
+    }
+}
+
+@Controller('isotopes/draft')
+export class IsotopesDraftController {
+    constructor(private readonly isotopeService: IsotopeService) { }
+
+    @Post()
+    @Redirect('/isotopes/add', HttpStatus.SEE_OTHER)
+    async createDraft() {
+        await this.isotopeService.createDraft(CURRENT_USER_ID);
+    }
+}
+
+@Controller('isotopes/:id/publish')
+export class IsotopesPublishController {
+    constructor(private readonly isotopeService: IsotopeService) { }
+
+    @Post()
+    @Redirect('/isotopes/feed', HttpStatus.SEE_OTHER)
+    async publishDraft(@Param('id', ParseIntPipe) id: number, @Body() dto: IsotopePublishDTO) {
+        await this.isotopeService.publishDraft(id, dto);
+    }
+}
 
 @Controller('isotopes/feed')
 export class IsotopesFeedController {
-    constructor(private readonly isotopeService: IsotopesService) { }
+    constructor(private readonly isotopeService: IsotopeService) { }
 
     @Get()
     @Render('feed')

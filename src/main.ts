@@ -1,6 +1,7 @@
 import hbs from 'hbs';
 import { join } from 'path';
 
+import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
@@ -11,6 +12,12 @@ async function bootstrap() {
         AppModule,
     );
 
+    app.useGlobalPipes(
+        new ValidationPipe({
+            transform: true,
+            whitelist: true,
+        }),
+    );
     app.useStaticAssets(join(import.meta.dirname, '..', 'public'));
 
     app.setBaseViewsDir(join(import.meta.dirname, '..', 'views'));
