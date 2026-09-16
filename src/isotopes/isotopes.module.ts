@@ -9,7 +9,8 @@ import {
     IsotopesDraftController,
     IsotopesFeedController,
     IsotopesHomeController,
-    IsotopesPublishController
+    IsotopesPublishController,
+    IsotopesDeleteController
 } from './isotopes.controller.js';
 import { IsotopesService } from './isotopes.service.js';
 
@@ -20,7 +21,8 @@ import { IsotopesService } from './isotopes.service.js';
         IsotopesAddController,
         IsotopesFeedController,
         IsotopesDraftController,
-        IsotopesPublishController
+        IsotopesPublishController,
+        IsotopesDeleteController,
     ],
     providers: [IsotopesService],
 })

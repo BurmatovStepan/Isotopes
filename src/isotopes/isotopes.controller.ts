@@ -44,12 +44,13 @@ export class IsotopesHomeController {
 
         if (next === 'true') {
             isotopeView = await this.isotopeService.getNextPublished(id, CURRENT_USER_ID);
+
+            if (!isotopeView) {
+                isotopeView = await this.isotopeService.getFirstPublished(CURRENT_USER_ID);
+            }
+
         } else {
             isotopeView = await this.isotopeService.getPublishedById(id, CURRENT_USER_ID);
-        }
-
-        if (!isotopeView) {
-            isotopeView = await this.isotopeService.getFirstPublished(CURRENT_USER_ID);
         }
 
         if (!isotopeView) {
@@ -118,5 +119,16 @@ export class IsotopesFeedController {
             isotopes,
             maxHalfLifeExponent: maxHalfLifeExponent || '-1',
         }
+    }
+}
+
+@Controller('isotopes/:id/delete')
+export class IsotopesDeleteController {
+    constructor(private readonly isotopeService: IsotopeService) { }
+
+    @Post()
+    @Redirect('/isotopes/feed', HttpStatus.SEE_OTHER)
+    async publishDraft(@Param('id', ParseIntPipe) id: number) {
+        await this.isotopeService.deletePublished(id, CURRENT_USER_ID);
     }
 }

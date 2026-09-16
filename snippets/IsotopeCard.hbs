@@ -1,13 +1,20 @@
 <div class="isotope-card {{className}}">
-  <a href="/isotopes/home/{{this.id}}" class="isotope-card__link"></a>
+  {{#if isAuthor}}
+  <form action="/isotopes/{{this.id}}/delete" method="post">
+    <button type="submit" class="isotope-card__delete">
+      <img src="/icons/bin.svg" class="isotope-card__delete-icon">
+    </button>
+  </form>
+  {{/if}}
 
-  {{> IsotopeImage
-    imageUrl=this.fullImageUrl
-    options=(hash
-      class="isotope-card__image"
-    )
-  }}
-
+  <a href="/isotopes/home/{{this.id}}" class="isotope-card__link isotope-card__link--image">
+    {{> IsotopeImage
+      imageUrl=this.fullImageUrl
+      options=(hash
+        class="isotope-card__image"
+      )
+    }}
+  </a>
   <div class="isotope-card__content">
     {{> Like
       class="isotope-card__like"
@@ -16,7 +23,9 @@
       isHorizontal=true
     }}
 
-    <h3 class="isotope-card__name">{{this.name}}</h3>
+    <a href="/isotopes/home/{{this.id}}" class="isotope-card__link isotope-card__link--name">
+      <h3 class="isotope-card__name">{{this.name}}</h3>
+    </a>
     <p class="isotope-card__half-life">T&half;: {{this.halfLifeFormatted}}</p>
   </div>
 </div>

@@ -316,6 +316,22 @@ export class IsotopesService {
         })
     }
 
+    async deletePublished(
+        isotopeId: number,
+        currentUserId: number,
+    ): Promise<void> {
+        await this.isotopeRepository.query(`
+            UPDATE isotope
+            SET status=$1
+            WHERE id=$2
+            AND author_id=$3
+        `, [
+            IsotopeStatus.Deleted,
+            isotopeId,
+            currentUserId
+        ]);
+    }
+
     private async assembleDTO(isotope: Isotope, currentUserId?: number): Promise<IsotopeDTO> {
         const [likeCount, userLike] = await Promise.all([
             this.likeRepository.count({
