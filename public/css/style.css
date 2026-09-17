@@ -591,13 +591,13 @@ input[type="file"]:hover::file-selector-button {
     appearance: none;
     -webkit-appearance: none;
 
-    background: transparent;
+    background-color: transparent;
     cursor: pointer;
 }
 
 .search__slider::-moz-range-track {
     height: 4px;
-    background: var(--surface-field);
+    background-color: var(--surface-field);
     border: 0;
     border-radius: 2px;
 }
@@ -606,7 +606,7 @@ input[type="file"]:hover::file-selector-button {
     width: 42px;
     height: 10px;
 
-    background: var(--surface-2);
+    background-color: var(--surface-2);
     border: 2px solid var(--border-main);
     border-radius: 4px;
     box-shadow: var(--box-shadow-small);
@@ -620,7 +620,7 @@ input[type="file"]:hover::file-selector-button {
 
 .search__slider:hover::-moz-range-thumb,
 .search__slider:active::-moz-range-thumb {
-    background: var(--surface-1);
+    background-color: var(--surface-1);
     border-color: var(--primary);
 }
 

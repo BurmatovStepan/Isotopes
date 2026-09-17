@@ -16,7 +16,7 @@ import { User } from './user.entity.js';
 import type { Relation } from 'typeorm';
 
 export enum IsotopeStatus {
-    Draft = 0,
+    Draft,
     Published,
     Deleted,
 };
