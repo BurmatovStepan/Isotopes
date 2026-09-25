@@ -21,20 +21,17 @@
       likeCount=likeCount
     }}
 
-    <div class="meta__info">
-      {{> PropertyDisplay
-        class="isotope__half-life"
-        label="Период полураспада"
-        propertyValues=(array halfLifeFormatted)
-      }}
+    {{> PropertyDisplay
+      class=radiationTypeClass
+      label="α-распад"
+      propertyValues=(array radiationTypeValue)
+    }}
 
-      {{> PropertyDisplay
-        class=radiationTypeClass
-        label="α-распад"
-        propertyValues=(array radiationTypeValue)
-      }}
-    </div>
-
+    {{> PropertyDisplay
+      class="isotope__half-life"
+      label="T½"
+      propertyValues=(array halfLifeFormatted)
+    }}
     <a href="/isotopes/home/{{id}}?next=true" class="meta__next next-button">
       <img src="/icons/chevrons-right.svg" class="next-button__icon">
     </a>

@@ -46,7 +46,7 @@ export class Isotope {
 
     @Column({
         type: 'text',
-        nullable: true
+        nullable: false
     })
     name: string | null;
 

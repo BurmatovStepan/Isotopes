@@ -13,7 +13,7 @@ import {
     Res
 } from '@nestjs/common';
 
-import { IsotopePublishDTO, IsotopesService as IsotopeService } from './isotopes.service.js';
+import { IsotopeDraftDTO, IsotopePublishDTO, IsotopesService as IsotopeService } from './isotopes.service.js';
 
 import type { Response } from 'express';
 
@@ -84,8 +84,8 @@ export class IsotopesDraftController {
 
     @Post()
     @Redirect('/isotopes/add', HttpStatus.SEE_OTHER)
-    async createDraft() {
-        await this.isotopeService.createDraft(CURRENT_USER_ID);
+    async createDraft(@Body() dto: IsotopeDraftDTO) {
+        await this.isotopeService.createDraft(CURRENT_USER_ID, dto);
     }
 }
 

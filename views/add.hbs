@@ -2,8 +2,23 @@
   title="Создание"
   pageClass="add"
 }}
-<form method="post" action="/isotopes/draft" enctype="multipart/form-data" class="form">
+<form method="post" action="/isotopes/draft" class="form">
   <div class="form__media-wrapper">
+    {{> Field
+      class="form__name-field"
+      label="Название изотопа"
+      parameters=(hash
+        type="text"
+        name="name"
+        id="isotope-name"
+        placeholder="Название"
+        value=name
+        maxlength=20
+        minlength=5
+        required=""
+      )
+    }}
+
     {{> Field
       class="form__video-field"
       label="Видео"

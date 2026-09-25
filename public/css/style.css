@@ -91,14 +91,7 @@ body {
     margin-left: auto;
     flex-direction: column;
     align-items: end;
-    gap: 32px;
-}
-
-.meta__info {
-    display: flex;
-    flex-direction: column;
-    align-items: end;
-    gap: 4px;
+    gap: 24px;
 }
 
 .like {
@@ -128,8 +121,8 @@ body {
     width: 40px;
     justify-content: center;
     text-decoration: none;
-    background-color: var(--surface-1);
-    border: 1px solid var(--border-main);
+    background-color: var(--surface-primary);
+    border: 1px solid var(--border-primary);
     border-radius: 8px;
 }
 
@@ -411,8 +404,7 @@ input[type="file"]:hover::file-selector-button {
 .property-display {
     display: flex;
     width: max-content;
-    padding: 4px 8px;
-    flex-direction: column;
+    padding: 4px;
     align-items: center;
     gap: 4px;
     background-color: var(--surface-1);
@@ -430,12 +422,12 @@ input[type="file"]:hover::file-selector-button {
 }
 
 .isotope__radiation-type div {
-    padding: 2px 8px;
+    padding: 2px 6px;
     color: var(--status-danger);
     font-size: 12px;
     background-color: var(--surface-danger);
     border: 1px solid var(--border-danger);
-    border-radius: 9999px;
+    border-radius: 4px;
 }
 
 .isotope__radiation-type--alpha div {
@@ -584,10 +576,12 @@ input[type="file"]:hover::file-selector-button {
     border-radius: 8px;
 }
 
-.search__slider {
+.search__slider-wrapper {
     width: 100%;
     grid-area: slider;
+}
 
+.slider__input {
     appearance: none;
     -webkit-appearance: none;
 
@@ -595,14 +589,14 @@ input[type="file"]:hover::file-selector-button {
     cursor: pointer;
 }
 
-.search__slider::-moz-range-track {
+.slider__input::-moz-range-track {
     height: 4px;
     background-color: var(--surface-field);
     border: 0;
     border-radius: 2px;
 }
 
-.search__slider::-moz-range-thumb {
+.slider__input::-moz-range-thumb {
     width: 42px;
     height: 10px;
 
@@ -618,13 +612,13 @@ input[type="file"]:hover::file-selector-button {
         box-shadow var(--transition-short) var(--transition-timing-function);
 }
 
-.search__slider:hover::-moz-range-thumb,
-.search__slider:active::-moz-range-thumb {
+.slider__input:hover::-moz-range-thumb,
+.slider__input:active::-moz-range-thumb {
     background-color: var(--surface-1);
     border-color: var(--primary);
 }
 
-.search__slider:active::-moz-range-thumb {
+.slider__input:active::-moz-range-thumb {
     box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
     transform: scaleX(1.1);
 }
@@ -656,8 +650,8 @@ input[type="file"]:hover::file-selector-button {
     z-index: 20;
     aspect-ratio: 1 / 1;
     padding: 2px;
-    background-color: var(--surface-danger);
-    border: 1px solid var(--border-danger);
+    background-color: var(--surface-primary);
+    border: 1px solid var(--border-primary);
     border-radius: 8px;
     transition: filter var(--transition-short) var(--transition-timing-function);
 }
@@ -665,4 +659,28 @@ input[type="file"]:hover::file-selector-button {
 .isotope-card__delete-icon {
     aspect-ratio: 1 / 1;
     width: 20px;
+}
+
+.slider {
+    display: grid;
+    grid-template-areas:
+    "slider slider"
+        "lower-bound upper-bound";
+}
+
+.slider__label {
+    margin-top: -4px;
+}
+
+.slider__label--lower {
+    grid-area: lower-bound;
+}
+
+.slider__label--upper {
+    grid-area: upper-bound;
+    justify-self: end;
+}
+
+.slider__input {
+    grid-area: slider;
 }

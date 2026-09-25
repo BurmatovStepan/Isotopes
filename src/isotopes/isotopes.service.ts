@@ -19,9 +19,9 @@ const NANOSECONDS_PER_SECOND = 1000000000n;
 const SECONDS_PER_YEAR = 31556952n;
 
 const TIME_UNITS = [
-    { label: 'млрд. лет', nanoseconds: SECONDS_PER_YEAR * 1000000000n * NANOSECONDS_PER_SECOND },
-    { label: 'млн. лет', nanoseconds: SECONDS_PER_YEAR * 1000000n * NANOSECONDS_PER_SECOND },
-    { label: 'тыс. лет', nanoseconds: SECONDS_PER_YEAR * 1000n * NANOSECONDS_PER_SECOND },
+    { label: 'млрд. л.', nanoseconds: SECONDS_PER_YEAR * 1000000000n * NANOSECONDS_PER_SECOND },
+    { label: 'млн. л.', nanoseconds: SECONDS_PER_YEAR * 1000000n * NANOSECONDS_PER_SECOND },
+    { label: 'тыс. л.', nanoseconds: SECONDS_PER_YEAR * 1000n * NANOSECONDS_PER_SECOND },
     { label: 'л.', nanoseconds: SECONDS_PER_YEAR * NANOSECONDS_PER_SECOND },
     { label: 'д.', nanoseconds: 86400n * NANOSECONDS_PER_SECOND },
     { label: 'ч.', nanoseconds: 3600n * NANOSECONDS_PER_SECOND },
@@ -55,10 +55,13 @@ export function IsBigInt(validationOptions?: ValidationOptions) {
     };
 }
 
-export class IsotopePublishDTO {
+export class IsotopeDraftDTO {
+    @IsNotEmpty()
     @IsString()
     name: string;
+}
 
+export class IsotopePublishDTO {
     @Transform(({ value }) => {
         if (value === undefined || value === null || value === '') return undefined;
 
@@ -69,13 +72,14 @@ export class IsotopePublishDTO {
         }
     })
     @IsNotEmpty()
-    @IsBigInt({ message: 'halfLife must be a valid positive integer' })
+    @IsBigInt({ message: 'период полураспада должен быть положительным целым числом' })
     halfLife: bigint;
 
     @Transform(({ value }) => value === 'on')
     @IsBoolean()
     isAlpha: boolean = false;
 
+    @IsNotEmpty()
     @IsString()
     description: string;
 };
@@ -292,8 +296,10 @@ export class IsotopesService {
 
     async createDraft(
         userId: number,
+        dto: IsotopeDraftDTO
     ): Promise<void> {
         const draft = this.isotopeRepository.create({
+            ...dto,
             status: IsotopeStatus.Draft,
             author: {
                 id: userId,

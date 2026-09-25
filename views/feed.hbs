@@ -6,8 +6,13 @@
   <form method="get" class="feed__search search">
     <div class="search__value-display" data-search-value>T&half;, макс. (нс)</div>
     <button class="search__find" type="submit">Найти</button>
-    <input class="search__slider" name="maxHalfLifeExponent" type="range" min="-1" max="27" step="1"
-      value="{{maxHalfLifeExponent}}" data-search-slider>
+
+    <div class="search__slider-wrapper slider">
+      <h3 class="slider__label slider__label--lower">0 нс.</h3>
+      <h3 class="slider__label slider__label--upper">1e27 нс.</h3>
+      <input class="slider__input" name="maxHalfLifeExponent" type="range" min="-1" max="27" step="1"
+        value="{{maxHalfLifeExponent}}" data-search-slider>
+    </div>
   </form>
 
   <ul class="feed__list">

@@ -4,21 +4,6 @@
 }}
 <form method="post" action="/isotopes/{{id}}/publish" class="form">
   {{> Field
-    class="form__name-field"
-    label="Название изотопа"
-    parameters=(hash
-      type="text"
-      name="name"
-      id="isotope-name"
-      placeholder="Название"
-      value=name
-      maxlength=20
-      minlength=5
-      required=""
-    )
-  }}
-
-  {{> Field
     class="form__half-life-field"
     label="Период полураспада (нс.)"
     parameters=(hash
