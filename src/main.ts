@@ -18,6 +18,7 @@ async function bootstrap() {
         new ValidationPipe({
             transform: true,
             whitelist: true,
+            forbidNonWhitelisted: true,
         }),
     );
     app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
@@ -65,4 +66,8 @@ function registerHandlebarsHelpers(): void {
         { url: '/isotopes/add', imageUrl: '/icons/circle-plus.svg' },
         { url: '/isotopes/feed', imageUrl: '/icons/grid.svg' },
     ]);
+
+    hbs.registerHelper('choose', (condition: boolean, trueValue: unknown, falseValue: unknown) => {
+        return condition ? trueValue : falseValue;
+    });
 }
