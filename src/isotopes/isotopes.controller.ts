@@ -1,7 +1,6 @@
 import {
     Body,
     Controller,
-    Delete,
     Get,
     Injectable,
     NotFoundException,
@@ -9,14 +8,15 @@ import {
     ParseIntPipe,
     Patch,
     Post,
-    Query
+    Query,
+    UploadedFiles,
+    UseInterceptors
 } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
-import {
-    IsotopeDraftDTO,
-    IsotopePublishDTO,
-    IsotopesService as IsotopeService
-} from './isotopes.service.js';
+import { IsotopeDraftDTO } from './dto/create-isotope-draft.dto.js';
+import { IsotopePublishDTO } from './dto/publish-isotope.dto.js';
+import { IsotopesService } from './isotopes.service.js';
 
 export const MINIO_URL = 'http://localhost:9000/isotopes';
 
@@ -30,7 +30,7 @@ export class AuthService {
 @Controller('isotopes')
 export class IsotopesController {
     constructor(
-        private readonly isotopeService: IsotopeService,
+        private readonly isotopeService: IsotopesService,
 
         private readonly authService: AuthService,
     ) { }
@@ -52,8 +52,35 @@ export class IsotopesController {
     }
 
     @Post('')
-    async createDraft(@Body() dto: IsotopeDraftDTO) {
-        return await this.isotopeService.createDraft(this.authService.getCurrentUserId(), dto);
+    @UseInterceptors(
+        FileFieldsInterceptor([
+            {
+                name: 'video',
+                maxCount: 1
+            },
+            {
+                name: 'image',
+                maxCount: 1
+            },
+        ]),
+    )
+    async createDraft(
+        @Body() dto: IsotopeDraftDTO,
+        @UploadedFiles()
+        files: {
+            videoFile?: Express.Multer.File[];
+            imageFile?: Express.Multer.File[];
+        },
+    ) {
+        const videoFile = files.videoFile?.[0];
+        const imageFile = files.imageFile?.[0];
+
+        return await this.isotopeService.createDraft(
+            this.authService.getCurrentUserId(),
+            dto,
+            videoFile,
+            imageFile,
+        );
     }
 
     @Get('/draft')
@@ -61,27 +88,24 @@ export class IsotopesController {
         return await this.isotopeService.getDraft(this.authService.getCurrentUserId());
     }
 
-
     @Patch('/:id/publish')
-    async publishDraft(@Param('id', ParseIntPipe) id: number, @Body() dto: IsotopePublishDTO) {
-        return await this.isotopeService.publishDraft(this.authService.getCurrentUserId(), id, dto);
+    async publishDraft(@Body() dto: IsotopePublishDTO) {
+        return await this.isotopeService.publishDraft(this.authService.getCurrentUserId(), dto);
     }
 
-    @Delete('/:id')
-    async deletePublished(@Param('id', ParseIntPipe) id: number) {
-        return await this.isotopeService.deletePublished(this.authService.getCurrentUserId(), id);
-    }
-
-    @Post('/:id')
-    async like(@Param('id', ParseIntPipe) id: number) {
-        return await this.isotopeService.like(this.authService.getCurrentUserId(), id);
+    @Post('/:id/like/:action')
+    async addLike(
+        @Param('id', ParseIntPipe) id: number,
+        @Param('action', ParseIntPipe) action: number
+    ) {
+        return await this.isotopeService.like(this.authService.getCurrentUserId(), id, action);
     }
 }
 
 @Controller('isotopes/feed')
 export class IsotopesFeedController {
     constructor(
-        private readonly isotopeService: IsotopeService,
+        private readonly isotopeService: IsotopesService,
 
         private readonly authService: AuthService,
     ) { }

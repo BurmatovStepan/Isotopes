@@ -10,8 +10,8 @@ import {
     RelationId
 } from 'typeorm';
 
+import { User } from '../../users/entities/user.entity.js';
 import { Like } from './like.entity.js';
-import { User } from './user.entity.js';
 
 import type { Relation } from 'typeorm';
 
