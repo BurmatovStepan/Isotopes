@@ -1,18 +1,24 @@
 import { Transform } from 'class-transformer';
 import {
     IsBoolean,
+    isNotEmpty,
     IsNotEmpty,
+    isString,
     IsString,
+    IsStrongPassword,
     registerDecorator,
     ValidationOptions
 } from 'class-validator';
 import { LessThanOrEqual, MoreThan, Repository } from 'typeorm';
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { Isotope, IsotopeStatus } from './entities/isotope.entity.js';
 import { Like } from './entities/like.entity.js';
+import { User } from './entities/user.entity.js';
+import { BinaryLike, randomBytes, scrypt, ScryptOptions, scryptSync, timingSafeEqual } from 'crypto';
+import { promisify } from 'util';
 
 const MINIO_URL = 'http://localhost:9000/isotopes';
 const NANOSECONDS_PER_SECOND = 1000000000n;
@@ -48,7 +54,7 @@ export function IsBigInt(validationOptions?: ValidationOptions) {
             options: validationOptions,
             validator: {
                 validate(value: any) {
-                    return typeof value === 'bigint';
+                    return typeof value === 'bigint' && value >= 0n;
                 },
             },
         });
@@ -72,7 +78,7 @@ export class IsotopePublishDTO {
         }
     })
     @IsNotEmpty()
-    @IsBigInt({ message: 'период полураспада должен быть положительным целым числом' })
+    @IsBigInt({ message: 'период полураспада должен быть положительным целым числом или 0' })
     halfLife: bigint;
 
     @Transform(({ value }) => value === 'on')
@@ -89,8 +95,6 @@ export type IsotopeView = Isotope & {
     likeCount: number;
     isLiked: boolean;
     isAuthor: boolean;
-    radiationTypeClass: string;
-    radiationTypeValue: string;
     halfLifeFormatted: string;
     fullVideoUrl: string | null;
     fullImageUrl: string | null;
@@ -126,14 +130,6 @@ function toIsotopeView(dto: IsotopeDTO): IsotopeView {
         ...meta,
         ...isotope,
 
-        radiationTypeClass:
-            `isotope__radiation-type${isotope.isAlpha
-                ? ' isotope__radiation-type--alpha'
-                : ''
-            }`,
-
-        radiationTypeValue: isotope.isAlpha ? 'Есть' : 'Нет',
-
         halfLifeFormatted:
             isotope.halfLife !== null
                 ? formatHalfLife(isotope.halfLife)
@@ -155,6 +151,7 @@ export class IsotopesService {
     constructor(
         @InjectRepository(Isotope)
         private readonly isotopeRepository: Repository<Isotope>,
+
         @InjectRepository(Like)
         private readonly likeRepository: Repository<Like>,
     ) { }
@@ -310,21 +307,31 @@ export class IsotopesService {
     }
 
     async publishDraft(
+        userId: number,
         draftId: number,
         dto: IsotopePublishDTO,
     ): Promise<void> {
-        await this.isotopeRepository.update({
+        const result = await this.isotopeRepository.update({
             id: draftId,
+            status: IsotopeStatus.Draft,
+            author: {
+                id: userId,
+            },
+
         }, {
             ...dto,
             status: IsotopeStatus.Published,
             publishedAt: new Date(),
-        })
+        });
+
+        if (result.affected !== 1) {
+            throw new NotFoundException();
+        }
     }
 
     async deletePublished(
+        userId: number,
         isotopeId: number,
-        currentUserId: number,
     ): Promise<void> {
         await this.isotopeRepository.query(`
             UPDATE isotope
@@ -334,8 +341,51 @@ export class IsotopesService {
         `, [
             IsotopeStatus.Deleted,
             isotopeId,
-            currentUserId
+            userId
         ]);
+    }
+
+    async like(
+        userId: number,
+        isotopeId: number,
+    ): Promise<void> {
+        const isotope = await this.isotopeRepository.findOne({
+            where: {
+                id: isotopeId,
+                status: IsotopeStatus.Published,
+            },
+        });
+
+        if (!isotope) {
+            throw new NotFoundException();
+        }
+
+        const userLike = await this.likeRepository.findOne({
+            where: {
+                user: {
+                    id: userId,
+                },
+                isotope: {
+                    id: isotopeId,
+                },
+            },
+        });
+
+        if (userLike) {
+            this.likeRepository.remove(userLike);
+
+        } else {
+            await this.likeRepository.save(
+                await this.likeRepository.create({
+                    user: {
+                        id: userId,
+                    },
+                    isotope: {
+                        id: isotopeId,
+                    },
+                })
+            )
+        }
     }
 
     private async assembleDTO(isotope: Isotope, currentUserId?: number): Promise<IsotopeDTO> {
@@ -368,5 +418,96 @@ export class IsotopesService {
             isLiked: userLike !== null,
             isAuthor: isotope.authorId === currentUserId,
         };
+    }
+}
+
+export class RegisterDTO {
+    @IsNotEmpty()
+    @IsString()
+    login: string;
+
+    @IsNotEmpty()
+    @IsString()
+    @IsStrongPassword()
+    password: string;
+}
+
+class NameAlreadyTakenException extends Error {
+    constructor() {
+        super('Это имя уже занято');
+        Error.captureStackTrace(this, this.constructor)
+    }
+}
+
+class PasswordHashFailedException extends Error {
+    constructor() {
+        super('Не удалось хешировать пароль');
+        Error.captureStackTrace(this, this.constructor)
+    }
+}
+
+export class Password {
+    private static readonly scryptAsync: (
+        password: BinaryLike,
+        salt: BinaryLike,
+        keylen: number,
+        options?: ScryptOptions,
+    ) => Promise<Buffer> = promisify(scrypt);
+
+    static async hashPassword(password: string) {
+        const salt = randomBytes(16).toString("hex");
+
+        try {
+            const passwordBuffer = await this.scryptAsync(password, salt, 64);
+            return `${passwordBuffer.toString('hex')}.${salt}`
+
+        } catch {
+            throw new PasswordHashFailedException();
+        }
+    }
+
+    static async comparePassword(
+        storedPassword: string,
+        suppliedPassword: string
+    ): Promise<boolean> {
+        const [hashedPassword, salt] = storedPassword.split(".");
+        const hashedPasswordBuffer = Buffer.from(hashedPassword, "hex");
+
+        try {
+            const suppliedPasswordBuffer = await this.scryptAsync(suppliedPassword, salt, 64);
+            return timingSafeEqual(hashedPasswordBuffer, suppliedPasswordBuffer);
+
+        } catch {
+            throw new PasswordHashFailedException();
+        }
+    }
+}
+
+@Injectable()
+export class UserRepository {
+    constructor(
+        @InjectRepository(User)
+        private readonly userRepository: Repository<User>,
+    ) { }
+
+    async register(
+        dto: RegisterDTO,
+    ): Promise<void> {
+        const similarUser = await this.userRepository.findOne({
+            where: {
+                login: dto.login,
+            },
+        });
+
+        if (similarUser) {
+            throw new NameAlreadyTakenException();
+        }
+
+        await this.userRepository.save(
+            await this.userRepository.create({
+                login: dto.login,
+                password_hash: await Password.hashPassword(dto.password),
+            })
+        )
     }
 }

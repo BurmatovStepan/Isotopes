@@ -1,8 +1,8 @@
 import hbs from 'hbs';
 import { join } from 'path';
 
-import { ValidationPipe } from '@nestjs/common';
-import { NestFactory } from '@nestjs/core';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
 import { AppModule } from './app.module.js';
@@ -12,19 +12,30 @@ async function bootstrap() {
         AppModule,
     );
 
+    app.setGlobalPrefix('api');
+
     app.useGlobalPipes(
         new ValidationPipe({
             transform: true,
             whitelist: true,
         }),
     );
+    app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+
     app.useStaticAssets(join(import.meta.dirname, '..', 'public'));
 
-    app.setBaseViewsDir(join(import.meta.dirname, '..', 'views'));
     app.setViewEngine('hbs');
-
+    app.setBaseViewsDir(join(import.meta.dirname, '..', 'views'));
     hbs.registerPartials(join(import.meta.dirname, '..', 'snippets'));
 
+    registerHandlebarsHelpers();
+
+    await app.listen(3000);
+}
+bootstrap();
+
+
+function registerHandlebarsHelpers(): void {
     hbs.registerHelper('hash', (options: Handlebars.HelperOptions) => {
         return options.hash;
     });
@@ -54,7 +65,4 @@ async function bootstrap() {
         { url: '/isotopes/add', imageUrl: '/icons/circle-plus.svg' },
         { url: '/isotopes/feed', imageUrl: '/icons/grid.svg' },
     ]);
-
-    await app.listen(3000);
 }
-bootstrap();

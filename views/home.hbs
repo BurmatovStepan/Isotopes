@@ -22,9 +22,11 @@
     }}
 
     {{> PropertyDisplay
-      class=radiationTypeClass
+      class=(if isAlpha
+        'isotope__radiation-type isotope__radiation-type--alpha'
+        'isotope__radiation-type')
       label="α-распад"
-      propertyValues=(array radiationTypeValue)
+      propertyValues=(array (if isAlpha 'Есть' 'Нет'))
     }}
 
     {{> PropertyDisplay
