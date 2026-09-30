@@ -3,7 +3,7 @@ import * as Minio from 'minio';
 
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { getEnv, parseBool } from '../../config.helpers.js';
+import { getEnv, parseBoolean } from '../../config.helpers.js';
 
 const MINIO_BUCKET_NAME = 'isotopes';
 
@@ -13,11 +13,11 @@ export class MinioService implements OnModuleInit {
 
     constructor(private configService: ConfigService) {
         this.minioClient = new Minio.Client({
-            endPoint: this.configService.get('MINIO_ENDPOINT', 'localhost'),
+            endPoint: getEnv(this.configService, 'MINIO_ENDPOINT', 'localhost'),
             port: getEnv(this.configService, 'MINIO_PORT', parseInt, 9000),
-            useSSL: getEnv(this.configService, 'MINIO_USE_SSL', parseBool, true),
-            accessKey: this.configService.get('MINIO_ACCESS_KEY'),
-            secretKey: this.configService.get('MINIO_SECRET_KEY'),
+            useSSL: getEnv(this.configService, 'MINIO_USE_SSL', parseBoolean, true),
+            accessKey: getEnv(this.configService, 'MINIO_ACCESS_KEY'),
+            secretKey: getEnv(this.configService, 'MINIO_SECRET_KEY'),
         });
     }
 

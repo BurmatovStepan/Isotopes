@@ -37,7 +37,7 @@ export class IsotopePublishDTO {
     @IsBigInt({ message: 'период полураспада должен быть положительным целым числом' })
     halfLife: bigint;
 
-    @Transform(({ value }) => value === 'on')
+    @Transform(({ value }) => ['on', 'true'].includes(value))
     @IsBoolean()
     isAlpha: boolean = false;
 
