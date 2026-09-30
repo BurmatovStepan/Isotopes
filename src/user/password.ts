@@ -1,12 +1,6 @@
+import { InternalServerErrorException } from '@nestjs/common';
 import { BinaryLike, randomBytes, scrypt, ScryptOptions, timingSafeEqual } from 'crypto';
 import { promisify } from 'util';
-
-class PasswordHashFailedException extends Error {
-    constructor() {
-        super('Не удалось хешировать пароль');
-        Error.captureStackTrace(this, this.constructor)
-    }
-}
 
 export class Password {
     private static readonly scryptAsync: (
@@ -24,7 +18,7 @@ export class Password {
             return `${passwordBuffer.toString('hex')}.${salt}`
 
         } catch {
-            throw new PasswordHashFailedException();
+            throw new InternalServerErrorException();
         }
     }
 
@@ -32,15 +26,26 @@ export class Password {
         storedPassword: string,
         suppliedPassword: string
     ): Promise<boolean> {
-        const [hashedPassword, salt] = storedPassword.split(".");
+        const parts = storedPassword.split(".");
+
+        if (parts.length !== 2) {
+            return false;
+        }
+
+        const [hashedPassword, salt] = parts;
         const hashedPasswordBuffer = Buffer.from(hashedPassword, "hex");
+
+        if (hashedPasswordBuffer.length !== 64) {
+            return false;
+        }
 
         try {
             const suppliedPasswordBuffer = await this.scryptAsync(suppliedPassword, salt, 64);
-            return timingSafeEqual(hashedPasswordBuffer, suppliedPasswordBuffer);
+            return hashedPasswordBuffer.length === suppliedPasswordBuffer.length
+                && timingSafeEqual(hashedPasswordBuffer, suppliedPasswordBuffer);
 
         } catch {
-            throw new PasswordHashFailedException();
+            return false;
         }
     }
 }

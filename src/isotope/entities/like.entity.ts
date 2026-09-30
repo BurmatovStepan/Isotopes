@@ -1,6 +1,6 @@
 import { Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, RelationId, Unique } from 'typeorm';
 
-import { User } from '../../users/entities/user.entity.js';
+import { User } from '../../user/entities/user.entity.js';
 import { Isotope } from './isotope.entity.js';
 
 import type { Relation } from 'typeorm';

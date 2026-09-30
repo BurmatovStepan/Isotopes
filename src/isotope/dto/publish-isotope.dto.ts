@@ -16,7 +16,7 @@ export function IsBigInt(validationOptions?: ValidationOptions) {
             options: validationOptions,
             validator: {
                 validate(value: any) {
-                    return typeof value === 'bigint' && value >= 0n;
+                    return typeof value === 'bigint' && value > 0n;
                 },
             },
         });
@@ -34,7 +34,7 @@ export class IsotopePublishDTO {
         }
     })
     @IsNotEmpty()
-    @IsBigInt({ message: 'период полураспада должен быть положительным целым числом или 0' })
+    @IsBigInt({ message: 'период полураспада должен быть положительным целым числом' })
     halfLife: bigint;
 
     @Transform(({ value }) => value === 'on')

@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm';
 
-import { Isotope } from '../src/isotopes/entities/isotope.entity.js';
-import { Like } from '../src/isotopes/entities/like.entity.js';
-import { User } from '../src/users/entities/user.entity.js';
+import { Isotope } from '../src/isotope/entities/isotope.entity.js';
+import { Like } from '../src/isotope/entities/like.entity.js';
+import { User } from '../src/user/entities/user.entity.js';
 
 const dataSource = new DataSource({
     type: 'postgres',

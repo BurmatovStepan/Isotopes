@@ -1,28 +1,27 @@
 import { randomUUID } from 'crypto';
 import * as Minio from 'minio';
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { getEnv, parseBool } from '../../config.helpers.js';
 
 const MINIO_BUCKET_NAME = 'isotopes';
 
 @Injectable()
-export class MinioService {
+export class MinioService implements OnModuleInit {
     private minioClient: Minio.Client;
 
     constructor(private configService: ConfigService) {
         this.minioClient = new Minio.Client({
             endPoint: this.configService.get('MINIO_ENDPOINT', 'localhost'),
-            port: this.configService.get<number>('MINIO_PORT', 9000),
-            useSSL: this.configService.get<boolean>('MINIO_USE_SSL'),
+            port: getEnv(this.configService, 'MINIO_PORT', parseInt, 9000),
+            useSSL: getEnv(this.configService, 'MINIO_USE_SSL', parseBool, true),
             accessKey: this.configService.get('MINIO_ACCESS_KEY'),
             secretKey: this.configService.get('MINIO_SECRET_KEY'),
         });
-
-        this.initializeBucket();
     }
 
-    private async initializeBucket() {
+    async onModuleInit() {
         try {
             const exists = await this.minioClient.bucketExists(MINIO_BUCKET_NAME);
             if (!exists) {
@@ -32,6 +31,7 @@ export class MinioService {
         } catch (error) {
             console.error('Ошибка при инициализации бакета MinIO:', (error as Error).message);
         }
+
     }
 
     async store(
@@ -54,15 +54,27 @@ export class MinioService {
     }
 
     async remove(
-        objectKey: string,
+        keys: string | string[],
     ): Promise<void> {
-        await this.minioClient.removeObject(
-            MINIO_BUCKET_NAME,
-            objectKey,
+        const objectKeys = Array.isArray(keys) ? keys : [keys];
+
+        await Promise.allSettled(
+            objectKeys.map(key =>
+                this.minioClient.removeObject(MINIO_BUCKET_NAME, key)
+            )
         );
     }
 
     private extractExtension(file: Express.Multer.File) {
-        return file.filename.split('.').at(-1);
+        const extension = file.originalname
+            .split('.')
+            .pop()
+            ?.toLowerCase();
+
+        if (!extension || !/^[a-z0-9]+$/.test(extension)) {
+            return 'bin';
+        }
+
+        return extension;
     }
 }

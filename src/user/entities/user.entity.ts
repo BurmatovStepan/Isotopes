@@ -1,7 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn, Unique } from 'typeorm';
 
-import { Isotope } from '../../isotopes/entities/isotope.entity.js';
-import { Like } from '../../isotopes/entities/like.entity.js';
+import { Isotope } from '../../isotope/entities/isotope.entity.js';
+import { Like } from '../../isotope/entities/like.entity.js';
 
 import type { Relation } from 'typeorm';
 

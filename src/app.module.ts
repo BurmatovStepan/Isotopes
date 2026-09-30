@@ -2,11 +2,13 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { IsotopesModule } from './isotopes/isotopes.module.js';
+import { IsotopeModule } from './isotope/isotope.module.js';
+import { UserModule } from './user/user.module.js';
 
 @Module({
     imports: [
-        IsotopesModule,
+        IsotopeModule,
+        UserModule,
 
         ConfigModule.forRoot({
             isGlobal: true,
@@ -18,7 +20,7 @@ import { IsotopesModule } from './isotopes/isotopes.module.js';
             useFactory: (config: ConfigService) => ({
                 type: 'postgres',
                 host: config.get('DB_HOST', 'localhost'),
-                port: config.get<number>('DB_PORT', 5432),
+                port: config.get('DB_PORT', 5432),
                 username: config.get('DB_USERNAME'),
                 password: config.get('DB_PASSWORD'),
                 database: config.get('DB_DATABASE'),

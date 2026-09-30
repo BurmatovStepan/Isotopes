@@ -41,10 +41,6 @@ export function toIsotopeView(dto: IsotopeDTO): IsotopeView {
 }
 
 function formatHalfLife(nanoseconds: bigint) {
-    if (nanoseconds === 0n) {
-        return '0 сек.';
-    }
-
     const matchedUnit = TIME_UNITS.find(unit => nanoseconds >= unit.nanoseconds);
 
     if (!matchedUnit) {
