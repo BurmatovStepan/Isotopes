@@ -1,6 +1,6 @@
 import { LessThanOrEqual, MoreThan, Repository } from 'typeorm';
 
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
 import { IsotopeDraftDTO } from './dto/create-isotope-draft.dto.js';
@@ -19,7 +19,7 @@ export enum LikeAction {
 }
 
 @Injectable()
-export class IsotopesService {
+export class IsotopeService {
     constructor(
         @InjectRepository(Isotope)
         private readonly isotopeRepository: Repository<Isotope>,
@@ -127,7 +127,7 @@ export class IsotopesService {
 
         const likeCountByIsotopeId = new Map(
             likeCounts.map(row => [
-                row.isotopeId,
+                Number(row.isotopeId),
                 Number(row.likeCount),
             ]),
         );
@@ -171,30 +171,68 @@ export class IsotopesService {
         videoFile?: Express.Multer.File,
         imageFile?: Express.Multer.File,
     ): Promise<IsotopeView> {
-        const [videoUrl, imageUrl] = await Promise.all([
-            videoFile !== undefined
-                ? this.minioStorageRepository.store(videoFile)
-                : null,
-
-            imageFile !== undefined
-                ? this.minioStorageRepository.store(imageFile)
-                : null,
-        ]);
-
-        const draft = await this.isotopeRepository.save(
-            this.isotopeRepository.create({
-                ...dto,
-                videoUrl,
-                imageUrl,
-                status: IsotopeStatus.Draft,
+        const hasDraft = await this.isotopeRepository.exists({
+            where: {
                 author: {
                     id: userId,
                 },
-            })
-        );
+                status: IsotopeStatus.Draft,
+            },
+        });
 
-        const assembled = await this.assembleDTO(draft);
-        return toIsotopeView(assembled);
+        if (hasDraft) {
+            throw new ConflictException('Черновик уже существует');
+        }
+
+        const [videoResult, imageResult] = await Promise.allSettled([
+            videoFile !== undefined
+                ? this.minioStorageRepository.store(videoFile)
+                : Promise.resolve(undefined),
+
+            imageFile !== undefined
+                ? this.minioStorageRepository.store(imageFile)
+                : Promise.resolve(undefined),
+        ]);
+
+        const uploadedKeys = [videoResult, imageResult]
+            .filter(
+                (result): result is PromiseFulfilledResult<string> =>
+                    result.status === 'fulfilled' && result.value !== undefined
+            )
+            .map(result => result.value);
+
+        if (
+            imageResult.status === 'rejected' ||
+            videoResult.status === 'rejected'
+        ) {
+
+            this.minioStorageRepository.remove(uploadedKeys);
+            throw new InternalServerErrorException('Ошибка при загрузке медиа');
+        }
+
+        const imageUrl = imageResult.value;
+        const videoUrl = videoResult.value;
+
+        try {
+            const draft = await this.isotopeRepository.save(
+                this.isotopeRepository.create({
+                    ...dto,
+                    videoUrl,
+                    imageUrl,
+                    status: IsotopeStatus.Draft,
+                    author: {
+                        id: userId,
+                    },
+                })
+            );
+
+            const assembled = await this.assembleDTO(draft, userId);
+            return toIsotopeView(assembled);
+
+        } catch (error) {
+            this.minioStorageRepository.remove(uploadedKeys);
+            throw error;
+        }
     }
 
     async publishDraft(
@@ -222,7 +260,7 @@ export class IsotopesService {
 
         const published = await this.isotopeRepository.save(draft);
 
-        const assembled = await this.assembleDTO(published);
+        const assembled = await this.assembleDTO(published, userId);
         return toIsotopeView(assembled);
     }
 
@@ -235,11 +273,13 @@ export class IsotopesService {
             SET status=$1
             WHERE id=$2
             AND author_id=$3
+            AND status=$4
             RETURNING id
         `, [
             IsotopeStatus.Deleted,
             isotopeId,
-            userId
+            userId,
+            IsotopeStatus.Published,
         ]);
 
         console.log(result);
@@ -262,33 +302,22 @@ export class IsotopesService {
             throw new NotFoundException();
         }
 
-        const userLike = await this.likeRepository.findOne({
-            where: {
-                user: {
-                    id: userId,
-                },
-                isotope: {
-                    id: isotopeId,
-                },
-            },
-        });
-
-        switch (true) {
-            case userLike && action === LikeAction.Remove:
-                await this.likeRepository.remove(userLike);
+        switch (action) {
+            case LikeAction.Remove:
+                await this.likeRepository.delete({
+                    user: { id: userId },
+                    isotope: { id: isotopeId },
+                })
                 break;
 
-            case !userLike && action === LikeAction.Add:
-                await this.likeRepository.save(
-                    this.likeRepository.create({
-                        user: {
-                            id: userId,
-                        },
-                        isotope: {
-                            id: isotopeId,
-                        },
-                    })
-                );
+            case LikeAction.Add:
+                await this.likeRepository.upsert(
+                    {
+                        user: { id: userId },
+                        isotope: { id: isotopeId },
+                    },
+                    ['user', 'isotope'],
+                )
                 break;
         }
 

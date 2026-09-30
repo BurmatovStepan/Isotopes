@@ -1,13 +1,15 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     Injectable,
     NotFoundException,
     Param,
+    ParseEnumPipe,
     ParseIntPipe,
-    Patch,
     Post,
+    Put,
     Query,
     UploadedFiles,
     UseInterceptors
@@ -16,9 +18,7 @@ import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
 import { IsotopeDraftDTO } from './dto/create-isotope-draft.dto.js';
 import { IsotopePublishDTO } from './dto/publish-isotope.dto.js';
-import { IsotopesService } from './isotopes.service.js';
-
-export const MINIO_URL = 'http://localhost:9000/isotopes';
+import { IsotopeService, LikeAction } from './isotope.service.js';
 
 @Injectable()
 export class AuthService {
@@ -28,18 +28,18 @@ export class AuthService {
 }
 
 @Controller('isotopes')
-export class IsotopesController {
+export class IsotopeController {
     constructor(
-        private readonly isotopeService: IsotopesService,
+        private readonly isotopeService: IsotopeService,
 
         private readonly authService: AuthService,
     ) { }
 
     @Get('')
-    async fetchPublished(@Query('maxHalfLifeExponent') maxHalfLifeExponent?: string) {
+    async fetchPublished(@Query('maxHalfLifeExponent', ParseIntPipe) maxHalfLifeExponent?: number) {
         let limit = undefined;
 
-        if (maxHalfLifeExponent && maxHalfLifeExponent !== "-1") {
+        if (maxHalfLifeExponent !== undefined && maxHalfLifeExponent >= 0) {
             limit = 10n ** BigInt(maxHalfLifeExponent);
         }
 
@@ -47,7 +47,10 @@ export class IsotopesController {
 
         return {
             isotopes,
-            maxHalfLifeExponent: maxHalfLifeExponent || '-1',
+            maxHalfLifeExponent:
+                maxHalfLifeExponent !== undefined
+                    ? maxHalfLifeExponent
+                    : -1,
         }
     }
 
@@ -68,12 +71,12 @@ export class IsotopesController {
         @Body() dto: IsotopeDraftDTO,
         @UploadedFiles()
         files: {
-            videoFile?: Express.Multer.File[];
-            imageFile?: Express.Multer.File[];
+            video?: Express.Multer.File[];
+            image?: Express.Multer.File[];
         },
     ) {
-        const videoFile = files.videoFile?.[0];
-        const imageFile = files.imageFile?.[0];
+        const videoFile = files.video?.[0];
+        const imageFile = files.image?.[0];
 
         return await this.isotopeService.createDraft(
             this.authService.getCurrentUserId(),
@@ -83,12 +86,17 @@ export class IsotopesController {
         );
     }
 
+    @Delete('/:id')
+    async deletePublished(@Param('id', ParseIntPipe) id: number) {
+        return await this.isotopeService.deletePublished(this.authService.getCurrentUserId(), id);
+    }
+
     @Get('/draft')
     async fetchDraft() {
         return await this.isotopeService.getDraft(this.authService.getCurrentUserId());
     }
 
-    @Patch('/:id/publish')
+    @Put('/draft')
     async publishDraft(@Body() dto: IsotopePublishDTO) {
         return await this.isotopeService.publishDraft(this.authService.getCurrentUserId(), dto);
     }
@@ -96,16 +104,16 @@ export class IsotopesController {
     @Post('/:id/like/:action')
     async addLike(
         @Param('id', ParseIntPipe) id: number,
-        @Param('action', ParseIntPipe) action: number
+        @Param('action', new ParseEnumPipe(LikeAction)) action: LikeAction,
     ) {
         return await this.isotopeService.like(this.authService.getCurrentUserId(), id, action);
     }
 }
 
 @Controller('isotopes/feed')
-export class IsotopesFeedController {
+export class IsotopeFeedController {
     constructor(
-        private readonly isotopeService: IsotopesService,
+        private readonly isotopeService: IsotopeService,
 
         private readonly authService: AuthService,
     ) { }

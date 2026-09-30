@@ -10,7 +10,7 @@ import {
     RelationId
 } from 'typeorm';
 
-import { User } from '../../users/entities/user.entity.js';
+import { User } from '../../user/entities/user.entity.js';
 import { Like } from './like.entity.js';
 
 import type { Relation } from 'typeorm';
@@ -48,7 +48,7 @@ export class Isotope {
         type: 'text',
         nullable: false
     })
-    name: string | null;
+    name: string;
 
     @Column({
         type: 'text',
