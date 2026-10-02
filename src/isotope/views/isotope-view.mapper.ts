@@ -1,7 +1,6 @@
 import { IsotopeDTO } from '../dto/display-isotope.dto.js';
 import { IsotopeView } from './isotope.view.js';
 
-const MINIO_URL = 'http://localhost:9000/isotopes';
 const NANOSECONDS_PER_SECOND = 1000000000n;
 const SECONDS_PER_YEAR = 31556952n;
 
@@ -20,23 +19,30 @@ const TIME_UNITS = [
 ];
 
 export function toIsotopeView(dto: IsotopeDTO): IsotopeView {
-    const { isotope, ...meta } = dto;
+    const {
+        id,
+        name,
+        description,
+        imageUrl,
+        videoUrl,
+        halfLife,
+        isAlpha,
+    } = dto.isotope;
+
     return {
-        ...meta,
-        ...isotope,
-
-        halfLifeFormatted:
-            isotope.halfLife !== null
-                ? formatHalfLife(isotope.halfLife)
-                : 'неизвестно',
-
-        fullVideoUrl: isotope.videoUrl
-            ? `${MINIO_URL}/${isotope.videoUrl}`
-            : null,
-
-        fullImageUrl: isotope.imageUrl
-            ? `${MINIO_URL}/${isotope.imageUrl}`
-            : null,
+        id,
+        name,
+        description,
+        imageUrl,
+        videoUrl,
+        isAlpha,
+        halfLife: halfLife?.toString() || null,
+        halfLifeFormatted: halfLife !== null
+            ? formatHalfLife(halfLife)
+            : 'неизвестно',
+        likeCount: dto.likeCount,
+        isLiked: dto.isLiked,
+        isAuthor: dto.isAuthor,
     };
 }
 

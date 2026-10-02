@@ -7,6 +7,5 @@ export class RegisterDTO {
 
     @IsNotEmpty()
     @IsString()
-    @IsStrongPassword()
     password: string;
 }

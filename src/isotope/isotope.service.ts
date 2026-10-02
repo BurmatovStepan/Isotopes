@@ -267,14 +267,14 @@ export class IsotopeService {
     async deletePublished(
         userId: number,
         isotopeId: number,
-    ): Promise<boolean> {
-        const result = await this.isotopeRepository.query(`
+    ): Promise<IsotopeView> {
+        const [rows, rowCount] = await this.isotopeRepository.query<[Isotope[], number]>(`
             UPDATE isotope
-            SET status=$1
-            WHERE id=$2
-            AND author_id=$3
-            AND status=$4
-            RETURNING id
+            SET status = $1
+            WHERE id = $2
+            AND author_id = $3
+            AND status = $4
+            RETURNING *;
         `, [
             IsotopeStatus.Deleted,
             isotopeId,
@@ -282,8 +282,27 @@ export class IsotopeService {
             IsotopeStatus.Published,
         ]);
 
-        console.log(result);
-        return result;
+        if (rowCount !== 1) {
+            throw new NotFoundException('Изотоп не найден');
+        }
+
+        const deletedIsotope = await this.isotopeRepository.findOne({
+            where: {
+                id: rows[0].id,
+            },
+        });
+
+        if (!deletedIsotope) {
+            throw new InternalServerErrorException('Удалённый изотоп не найден после обновления');
+        }
+
+        const mediaKeys = [deletedIsotope.videoUrl, deletedIsotope.imageUrl]
+            .filter(key => key !== null);
+
+        await this.minioStorageRepository.remove(mediaKeys);
+
+        const dto = await this.assembleDTO(deletedIsotope, userId);
+        return toIsotopeView(dto);
     }
 
     async like(

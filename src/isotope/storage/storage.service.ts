@@ -15,7 +15,7 @@ export class MinioService implements OnModuleInit {
         this.minioClient = new Minio.Client({
             endPoint: getEnv(this.configService, 'MINIO_ENDPOINT', 'localhost'),
             port: getEnv(this.configService, 'MINIO_PORT', parseInt, 9000),
-            useSSL: getEnv(this.configService, 'MINIO_USE_SSL', parseBoolean, true),
+            useSSL: getEnv(this.configService, 'MINIO_USE_SSL', parseBoolean, false),
             accessKey: getEnv(this.configService, 'MINIO_ACCESS_KEY'),
             secretKey: getEnv(this.configService, 'MINIO_SECRET_KEY'),
         });
