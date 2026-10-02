@@ -23,7 +23,7 @@ import { IsotopeService, LikeAction } from './isotope.service.js';
 @Injectable()
 export class AuthService {
     getCurrentUserId(): number {
-        return 1;
+        return 2;
     }
 }
 
@@ -36,7 +36,7 @@ export class IsotopeController {
     ) { }
 
     @Get('')
-    async fetchPublished(@Query('maxHalfLifeExponent', ParseIntPipe) maxHalfLifeExponent?: number) {
+    async fetchPublished(@Query('maxHalfLifeExponent', new ParseIntPipe({ optional: true })) maxHalfLifeExponent?: number) {
         let limit = undefined;
 
         if (maxHalfLifeExponent !== undefined && maxHalfLifeExponent >= 0) {

@@ -1,10 +1,14 @@
-import { Isotope } from '../entities/isotope.entity.js';
+export type IsotopeView = {
+    id: number;
+    name: string;
+    description: string | null;
+    imageUrl: string | null;
+    videoUrl: string | null;
+    halfLife: string | null;
+    halfLifeFormatted: string;
+    isAlpha: boolean | null;
 
-export type IsotopeView = Isotope & {
     likeCount: number;
     isLiked: boolean;
     isAuthor: boolean;
-    halfLifeFormatted: string;
-    fullVideoUrl: string | null;
-    fullImageUrl: string | null;
 };

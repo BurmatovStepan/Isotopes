@@ -1,5 +1,6 @@
 /media
 /minio-data
+data_migrate
 
 # compiled output
 /dist
