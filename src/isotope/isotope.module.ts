@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { Isotope } from './entities/isotope.entity.js';
 import { Like } from './entities/like.entity.js';
-import { AuthService, IsotopeController, IsotopeFeedController } from './isotope.controller.js';
+import { AuthService, IsotopeController } from './isotope.controller.js';
 import { IsotopeService } from './isotope.service.js';
 import { MinioService } from './storage/storage.service.js';
 
@@ -11,7 +11,6 @@ import { MinioService } from './storage/storage.service.js';
     imports: [TypeOrmModule.forFeature([Isotope, Like])],
     controllers: [
         IsotopeController,
-        IsotopeFeedController,
     ],
     providers: [IsotopeService, AuthService, MinioService],
 })

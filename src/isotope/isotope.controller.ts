@@ -54,6 +54,30 @@ export class IsotopeController {
         }
     }
 
+    @Get('/:id')
+    async fetchById(@Param('id', ParseIntPipe) id: number, @Query('next') next?: string) {
+        const currentUserId = this.authService.getCurrentUserId();
+
+        let isotopeView;
+
+        if (next === 'true') {
+            isotopeView = await this.isotopeService.getNextPublished(id, currentUserId);
+
+            if (!isotopeView) {
+                isotopeView = await this.isotopeService.getFirstPublished(currentUserId);
+            }
+
+        } else {
+            isotopeView = await this.isotopeService.getPublishedById(id, currentUserId);
+        }
+
+        if (!isotopeView) {
+            throw new NotFoundException();
+        }
+
+        return isotopeView;
+    }
+
     @Post('')
     @UseInterceptors(
         FileFieldsInterceptor([
@@ -107,43 +131,5 @@ export class IsotopeController {
         @Param('action', new ParseEnumPipe(LikeAction)) action: LikeAction,
     ) {
         return await this.isotopeService.like(this.authService.getCurrentUserId(), id, action);
-    }
-}
-
-@Controller('isotopes/feed')
-export class IsotopeFeedController {
-    constructor(
-        private readonly isotopeService: IsotopeService,
-
-        private readonly authService: AuthService,
-    ) { }
-
-    @Get('')
-    async fetchFirstPublished() {
-        return this.isotopeService.getFirstPublished(this.authService.getCurrentUserId());
-    }
-
-    @Get('/:id')
-    async fetchById(@Param('id', ParseIntPipe) id: number, @Query('next') next?: string) {
-        const currentUserId = this.authService.getCurrentUserId();
-
-        let isotopeView;
-
-        if (next === 'true') {
-            isotopeView = await this.isotopeService.getNextPublished(id, currentUserId);
-
-            if (!isotopeView) {
-                isotopeView = await this.isotopeService.getFirstPublished(currentUserId);
-            }
-
-        } else {
-            isotopeView = await this.isotopeService.getPublishedById(id, currentUserId);
-        }
-
-        if (!isotopeView) {
-            throw new NotFoundException();
-        }
-
-        return isotopeView;
     }
 }
