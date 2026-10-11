@@ -96,8 +96,13 @@ body {
 
 .like {
     display: flex;
+    padding: 4px;
     flex-direction: column;
     align-items: center;
+    gap: 4px;
+    background-color: var(--surface-1);
+    border: 1px solid var(--border-main);
+    border-radius: 8px;
 }
 
 .like--horizontal {
@@ -405,6 +410,7 @@ input[type="file"]:hover::file-selector-button {
     display: flex;
     width: max-content;
     padding: 4px;
+    flex-direction: column;
     align-items: center;
     gap: 4px;
     background-color: var(--surface-1);
@@ -412,28 +418,46 @@ input[type="file"]:hover::file-selector-button {
     border-radius: 8px;
 }
 
-.isotope__half-life div {
-    padding: 2px 6px;
+.isotope__half-life {
+    width: 42px;
+}
+
+.isotope__half-life .property-display__value {
+    padding: 2px;
     color: var(--text-main);
-    font-size: 13px;
+    font-size: 11px;
     font-family: Consolas;
     background-color: var(--surface-2);
     border-radius: 4px;
 }
 
-.isotope__radiation-type div {
-    padding: 2px 6px;
+.isotope__radiation-type .property-display__value {
+    padding: 2px;
     color: var(--status-danger);
-    font-size: 12px;
     background-color: var(--surface-danger);
     border: 1px solid var(--border-danger);
     border-radius: 4px;
 }
 
-.isotope__radiation-type--alpha div {
+.isotope__radiation-type--alpha .property-display__value {
     color: var(--status-success);
     background-color: var(--surface-success);
     border: 1px solid var(--border-success);
+}
+
+.property-display__value-icon {
+    aspect-ratio: 1 / 1;
+    width: 20px;
+}
+
+.property-display__label-icon {
+    aspect-ratio: 1 / 1;
+    width: 32px;
+}
+
+.property-display__label {
+    font-weight: 600;
+    font-size: 18px;
 }
 
 .radiation-type {

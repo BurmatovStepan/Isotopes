@@ -90,8 +90,10 @@ export type IsotopeView = Isotope & {
     isLiked: boolean;
     isAuthor: boolean;
     radiationTypeClass: string;
-    radiationTypeValue: string;
-    halfLifeFormatted: string;
+    halfLifeFormatted: {
+        compact: string;
+        full: string;
+    };
     fullVideoUrl: string | null;
     fullImageUrl: string | null;
 };
@@ -120,6 +122,22 @@ function formatHalfLife(nanoseconds: bigint) {
     return `${integerPart}.${fractionString} ${matchedUnit.label}`;
 }
 
+function formatHalfLifeCompact(nanoseconds: bigint) {
+    const full = formatHalfLife(nanoseconds);
+
+    const compact = full
+        .replace(/^(\d+)(?:\.(\d+))?\s+.*$/, (_, whole, fraction = '') => {
+            const value = `${whole}${fraction ? `,${fraction}` : ''}`;
+            const n = Number(value.replace(',', '.'));
+
+            return n >= 1_000_000
+                ? `${n.toExponential(1).replace('.', ',').replace('e+', 'e')}`
+                : value;
+        });
+
+    return { compact, full };
+}
+
 function toIsotopeView(dto: IsotopeDTO): IsotopeView {
     const { isotope, ...meta } = dto;
     return {
@@ -132,12 +150,10 @@ function toIsotopeView(dto: IsotopeDTO): IsotopeView {
                 : ''
             }`,
 
-        radiationTypeValue: isotope.isAlpha ? 'Есть' : 'Нет',
-
         halfLifeFormatted:
             isotope.halfLife !== null
-                ? formatHalfLife(isotope.halfLife)
-                : 'неизвестно',
+                ? formatHalfLifeCompact(isotope.halfLife)
+                : { compact: 'NaN', full: 'NaN' },
 
         fullVideoUrl: isotope.videoUrl
             ? `${MINIO_URL}/${isotope.videoUrl}`

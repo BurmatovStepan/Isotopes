@@ -21,17 +21,22 @@
       likeCount=likeCount
     }}
 
-    {{> PropertyDisplay
-      class=radiationTypeClass
-      label="α-распад"
-      propertyValues=(array radiationTypeValue)
-    }}
+    <div class="property-display {{radiationTypeClass}}">
+      <img src="/icons/alpha.svg" class="property-display__label-icon">
+      <div class="property-display__value">
+        {{#if isAlpha}}
+        <img src="/icons/check.svg" class="property-display__value-icon">
+        {{else}}
+        <img src="/icons/cross.svg" class="property-display__value-icon">
+        {{/if}}
+      </div>
+    </div>
 
-    {{> PropertyDisplay
-      class="isotope__half-life"
-      label="T½"
-      propertyValues=(array halfLifeFormatted)
-    }}
+    <div class="property-display isotope__half-life" title="{{halfLifeFormatted.full}}">
+      <div class="property-display__label">T&half;</div>
+      <div class="property-display__value">{{halfLifeFormatted.compact}}</div>
+    </div>
+
     <a href="/isotopes/home/{{id}}?next=true" class="meta__next next-button">
       <img src="/icons/chevrons-right.svg" class="next-button__icon">
     </a>
