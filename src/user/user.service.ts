@@ -1,14 +1,14 @@
-
 import { Repository } from 'typeorm';
 
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { Password } from '../password.helper.js';
 import { User } from './entities/user.entity.js';
-import { RegisterDTO } from './dto/register-user.dto.js';
-import { Password } from './password.js';
-import { toUserView } from './views/user-view.mapper.js';
-import { UserView } from './views/user.view.js';
+
+function normalizeLogin(login: string) {
+    return login.trim().toLowerCase();
+}
 
 @Injectable()
 export class UserService {
@@ -17,39 +17,38 @@ export class UserService {
         private readonly userRepository: Repository<User>,
     ) { }
 
-    async register(
-        dto: RegisterDTO,
-    ): Promise<UserView> {
-        const login = dto.login.trim().toLowerCase()
-
-        const similarUser = await this.userRepository.findOne({
+    async loginExists(
+        login: string
+    ): Promise<boolean> {
+        const loginNormalized = normalizeLogin(login);
+        const user = await this.userRepository.findOne({
             where: {
-                login,
+                login: loginNormalized,
             },
         });
 
-        if (similarUser) {
-            throw new ConflictException('Это имя уже занято');
-        }
+        return Boolean(user);
+    }
 
-        try {
-            const user = await this.userRepository.save(
-                this.userRepository.create({
-                    login,
-                    password_hash: await Password.hashPassword(dto.password),
-                })
-            );
+    async createUser(
+        login: string,
+        password: string,
+    ): Promise<User> {
+        return await this.userRepository.save(
+            this.userRepository.create({
+                login: normalizeLogin(login),
+                password_hash: await Password.hashPassword(password),
+            })
+        );
+    }
 
-            return toUserView(user);
-
-        } catch (error) {
-            if ((error as { code?: string }).code === '23505') {
-                throw new ConflictException('Это имя уже занято');
-            }
-
-            throw error;
-        }
-
-
+    async getByLogin(
+        login: string,
+    ): Promise<User | null> {
+        return await this.userRepository.findOne({
+            where: {
+                login: normalizeLogin(login),
+            },
+        });
     }
 }

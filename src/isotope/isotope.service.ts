@@ -1,15 +1,20 @@
 import { LessThanOrEqual, MoreThan, Repository } from 'typeorm';
 
-import { ConflictException, Injectable, InternalServerErrorException, NotFoundException } from '@nestjs/common';
+import {
+    ConflictException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 
+import { S3StorageService } from '../storage/storage.service.js';
 import { IsotopeDraftDTO } from './dto/create-isotope-draft.dto.js';
 import { IsotopeDTO } from './dto/display-isotope.dto.js';
 import { IsotopePublishDTO } from './dto/publish-isotope.dto.js';
 import { LikeResult } from './dto/set-like.dto.js';
 import { Isotope, IsotopeStatus } from './entities/isotope.entity.js';
 import { Like } from './entities/like.entity.js';
-import { MinioService } from './storage/storage.service.js';
 import { toIsotopeView } from './views/isotope-view.mapper.js';
 import { IsotopeView } from './views/isotope.view.js';
 
@@ -27,7 +32,7 @@ export class IsotopeService {
         @InjectRepository(Like)
         private readonly likeRepository: Repository<Like>,
 
-        private readonly minioStorageRepository: MinioService,
+        private readonly s3StorageService: S3StorageService,
     ) { }
 
     async getPublishedById(
@@ -186,11 +191,11 @@ export class IsotopeService {
 
         const [videoResult, imageResult] = await Promise.allSettled([
             videoFile !== undefined
-                ? this.minioStorageRepository.store(videoFile)
+                ? this.s3StorageService.store(videoFile)
                 : Promise.resolve(undefined),
 
             imageFile !== undefined
-                ? this.minioStorageRepository.store(imageFile)
+                ? this.s3StorageService.store(imageFile)
                 : Promise.resolve(undefined),
         ]);
 
@@ -206,7 +211,7 @@ export class IsotopeService {
             videoResult.status === 'rejected'
         ) {
 
-            this.minioStorageRepository.remove(uploadedKeys);
+            await this.s3StorageService.remove(uploadedKeys);
             throw new InternalServerErrorException('Ошибка при загрузке медиа');
         }
 
@@ -230,7 +235,7 @@ export class IsotopeService {
             return toIsotopeView(assembled);
 
         } catch (error) {
-            this.minioStorageRepository.remove(uploadedKeys);
+            await this.s3StorageService.remove(uploadedKeys);
             throw error;
         }
     }
@@ -299,7 +304,7 @@ export class IsotopeService {
         const mediaKeys = [deletedIsotope.videoUrl, deletedIsotope.imageUrl]
             .filter(key => key !== null);
 
-        await this.minioStorageRepository.remove(mediaKeys);
+        await this.s3StorageService.remove(mediaKeys);
 
         const dto = await this.assembleDTO(deletedIsotope, userId);
         return toIsotopeView(dto);

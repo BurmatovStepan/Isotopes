@@ -1,3 +1,4 @@
+import cookieParser from 'cookie-parser';
 import hbs from 'hbs';
 import { join } from 'path';
 
@@ -11,6 +12,8 @@ async function bootstrap() {
     const app = await NestFactory.create<NestExpressApplication>(
         AppModule,
     );
+
+    app.use(cookieParser());
 
     app.setGlobalPrefix('api');
 

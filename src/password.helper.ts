@@ -1,6 +1,7 @@
-import { InternalServerErrorException } from '@nestjs/common';
 import { BinaryLike, randomBytes, scrypt, ScryptOptions, timingSafeEqual } from 'crypto';
 import { promisify } from 'util';
+
+import { InternalServerErrorException } from '@nestjs/common';
 
 export class Password {
     private static readonly scryptAsync: (
@@ -41,8 +42,8 @@ export class Password {
 
         try {
             const suppliedPasswordBuffer = await this.scryptAsync(suppliedPassword, salt, 64);
-            return hashedPasswordBuffer.length === suppliedPasswordBuffer.length
-                && timingSafeEqual(hashedPasswordBuffer, suppliedPasswordBuffer);
+            return hashedPasswordBuffer.length === suppliedPasswordBuffer.length &&
+                timingSafeEqual(hashedPasswordBuffer, suppliedPasswordBuffer);
 
         } catch {
             return false;

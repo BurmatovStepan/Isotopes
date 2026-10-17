@@ -1,5 +1,5 @@
-import { InternalServerErrorException } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
+import { InternalServerErrorException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 
 type Parser<T> = (value: string) => T;
 

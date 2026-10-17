@@ -3,7 +3,6 @@ import {
     Controller,
     Delete,
     Get,
-    Injectable,
     NotFoundException,
     Param,
     ParseEnumPipe,
@@ -11,39 +10,39 @@ import {
     Post,
     Put,
     Query,
+    Req,
     UploadedFiles,
+    UseGuards,
     UseInterceptors
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 
+import { AuthReq } from '../auth/auth.deco.js';
+import { AuthOnly } from '../auth/auth.guards.js';
 import { IsotopeDraftDTO } from './dto/create-isotope-draft.dto.js';
 import { IsotopePublishDTO } from './dto/publish-isotope.dto.js';
 import { IsotopeService, LikeAction } from './isotope.service.js';
 
-@Injectable()
-export class AuthService {
-    getCurrentUserId(): number {
-        return 2;
-    }
-}
+import type { AppRequest, AuthRequest } from '../auth/auth.deco.js';
 
 @Controller('isotopes')
 export class IsotopeController {
     constructor(
         private readonly isotopeService: IsotopeService,
-
-        private readonly authService: AuthService,
     ) { }
 
     @Get('')
-    async fetchPublished(@Query('maxHalfLifeExponent', new ParseIntPipe({ optional: true })) maxHalfLifeExponent?: number) {
+    async fetchPublished(
+        @Req() req: AppRequest,
+        @Query('maxHalfLifeExponent', new ParseIntPipe({ optional: true })) maxHalfLifeExponent?: number,
+    ) {
         let limit = undefined;
 
         if (maxHalfLifeExponent !== undefined && maxHalfLifeExponent >= 0) {
             limit = 10n ** BigInt(maxHalfLifeExponent);
         }
 
-        const isotopes = await this.isotopeService.getPublished(limit, this.authService.getCurrentUserId());
+        const isotopes = await this.isotopeService.getPublished(limit, req.userId);
 
         return {
             isotopes,
@@ -54,9 +53,21 @@ export class IsotopeController {
         }
     }
 
+    @UseGuards(AuthOnly)
+    @Get('/draft')
+    async fetchDraft(
+        @AuthReq() req: AuthRequest,
+    ) {
+        return await this.isotopeService.getDraft(req.userId);
+    }
+
     @Get('/:id')
-    async fetchById(@Param('id', ParseIntPipe) id: number, @Query('next') next?: string) {
-        const currentUserId = this.authService.getCurrentUserId();
+    async fetchById(
+        @Req() req: AppRequest,
+        @Param('id', ParseIntPipe) id: number,
+        @Query('next') next?: string
+    ) {
+        const currentUserId = req.auth ? req.userId : undefined;
 
         let isotopeView;
 
@@ -78,6 +89,7 @@ export class IsotopeController {
         return isotopeView;
     }
 
+    @UseGuards(AuthOnly)
     @Post('')
     @UseInterceptors(
         FileFieldsInterceptor([
@@ -92,6 +104,7 @@ export class IsotopeController {
         ]),
     )
     async createDraft(
+        @AuthReq() req: AuthRequest,
         @Body() dto: IsotopeDraftDTO,
         @UploadedFiles()
         files: {
@@ -103,33 +116,38 @@ export class IsotopeController {
         const imageFile = files.image?.[0];
 
         return await this.isotopeService.createDraft(
-            this.authService.getCurrentUserId(),
+            req.userId,
             dto,
             videoFile,
             imageFile,
         );
     }
 
+    @UseGuards(AuthOnly)
     @Delete('/:id')
-    async deletePublished(@Param('id', ParseIntPipe) id: number) {
-        return await this.isotopeService.deletePublished(this.authService.getCurrentUserId(), id);
+    async deletePublished(
+        @AuthReq() req: AuthRequest,
+        @Param('id', ParseIntPipe) id: number
+    ) {
+        return await this.isotopeService.deletePublished(req.userId, id);
     }
 
-    @Get('/draft')
-    async fetchDraft() {
-        return await this.isotopeService.getDraft(this.authService.getCurrentUserId());
-    }
-
+    @UseGuards(AuthOnly)
     @Put('/draft')
-    async publishDraft(@Body() dto: IsotopePublishDTO) {
-        return await this.isotopeService.publishDraft(this.authService.getCurrentUserId(), dto);
+    async publishDraft(
+        @AuthReq() req: AuthRequest,
+        @Body() dto: IsotopePublishDTO
+    ) {
+        return await this.isotopeService.publishDraft(req.userId, dto);
     }
 
+    @UseGuards(AuthOnly)
     @Post('/:id/like/:action')
     async addLike(
+        @AuthReq() req: AuthRequest,
         @Param('id', ParseIntPipe) id: number,
         @Param('action', new ParseEnumPipe(LikeAction)) action: LikeAction,
     ) {
-        return await this.isotopeService.like(this.authService.getCurrentUserId(), id, action);
+        return await this.isotopeService.like(req.userId, id, action);
     }
 }
