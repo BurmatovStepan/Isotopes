@@ -16,12 +16,6 @@ import {
     UseInterceptors
 } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-
-import { AuthReq } from '../auth/auth.deco.js';
-import { AuthOnly } from '../auth/auth.guards.js';
-import { IsotopeDraftDTO } from './dto/create-isotope-draft.dto.js';
-import { IsotopePublishDTO } from './dto/publish-isotope.dto.js';
-import { IsotopeService, LikeAction } from './isotope.service.js';
 import {
     ApiBody,
     ApiConsumes,
@@ -30,8 +24,14 @@ import {
     ApiParam,
     ApiQuery,
     ApiResponse,
-    ApiTags,
+    ApiTags
 } from '@nestjs/swagger';
+
+import { AuthReq } from '../auth/auth.deco.js';
+import { AuthOnly } from '../auth/auth.guards.js';
+import { IsotopeDraftDTO } from './dto/create-isotope-draft.dto.js';
+import { IsotopePublishDTO } from './dto/publish-isotope.dto.js';
+import { IsotopeService, LikeAction } from './isotope.service.js';
 
 import type { AppRequest, AuthRequest } from '../auth/auth.deco.js';
 

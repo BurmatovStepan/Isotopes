@@ -66,10 +66,7 @@ export class AuthService {
         await this.sessionService.create(sessionId, user.id);
 
         return {
-            user: {
-                id: user.id,
-                login: user.login,
-            },
+            userId: user.id,
             sessionId,
         }
     }

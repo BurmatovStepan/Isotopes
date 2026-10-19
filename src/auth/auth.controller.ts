@@ -1,18 +1,18 @@
 import { Body, Controller, Post, Res, UseGuards } from '@nestjs/common';
-
-import { AuthReq } from './auth.deco.js';
-import { AuthOnly, GuestOnly } from './auth.guards.js';
-import { AuthService } from './auth.service.js';
-import { LoginDTO } from './dto/login.dto.js';
-import { RegisterDTO } from './dto/register.dto.js';
 import {
     ApiBody,
     ApiConsumes,
     ApiCookieAuth,
     ApiOperation,
     ApiResponse,
-    ApiTags,
+    ApiTags
 } from '@nestjs/swagger';
+
+import { AuthReq } from './auth.deco.js';
+import { AuthOnly, GuestOnly } from './auth.guards.js';
+import { AuthService } from './auth.service.js';
+import { LoginDTO } from './dto/login.dto.js';
+import { RegisterDTO } from './dto/register.dto.js';
 
 import type { AuthRequest } from './auth.deco.js';
 
@@ -46,7 +46,7 @@ export class AuthController {
             secure: false,
         });
 
-        return result.user;
+        return { userId: result.userId };
     }
 
     @UseGuards(GuestOnly)
@@ -70,7 +70,7 @@ export class AuthController {
             secure: false,
         });
 
-        return result.user;
+        return { userId: result.userId };
     }
 
     @UseGuards(AuthOnly)

@@ -1,5 +1,4 @@
 import { Transform } from 'class-transformer';
-import { ApiProperty } from '@nestjs/swagger';
 import {
     IsBoolean,
     IsNotEmpty,
@@ -7,6 +6,8 @@ import {
     registerDecorator,
     ValidationOptions
 } from 'class-validator';
+
+import { ApiProperty } from '@nestjs/swagger';
 
 export function IsBigInt(validationOptions?: ValidationOptions) {
     return function (object: object, propertyName: string) {
