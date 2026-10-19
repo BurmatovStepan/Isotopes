@@ -21,8 +21,8 @@
 | `id` | identity / integer | Нет | Первичный ключ; значение генерируется базой данных |
 | `name` | `text` | Нет | Название изотопа |
 | `description` | `text` | Да | Описание |
-| `image_url` | `text` | Да | Ключ изображения в MinIO |
-| `video_url` | `text` | Да | Ключ видео в MinIO |
+| `image_url` | `text` | Нет | Ключ изображения в MinIO |
+| `video_url` | `text` | Нет | Ключ видео в MinIO |
 | `half_life` | `numeric` | Да | Период полураспада; в приложении преобразуется в `bigint` |
 | `is_alpha` | `boolean` | Да | Признак альфа-излучения |
 | `status` | `smallint` | Нет | Статус изотопа; по умолчанию `Draft` (`0`) |

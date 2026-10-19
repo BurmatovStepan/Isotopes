@@ -1,4 +1,5 @@
 import { Transform } from 'class-transformer';
+import { ApiProperty } from '@nestjs/swagger';
 import {
     IsBoolean,
     IsNotEmpty,
@@ -24,6 +25,11 @@ export function IsBigInt(validationOptions?: ValidationOptions) {
 }
 
 export class IsotopePublishDTO {
+    @ApiProperty({
+        type: String,
+        example: '31556952000000000000',
+        description: 'Период полураспада в наносекундах (положительное целое)',
+    })
     @Transform(({ value }) => {
         if (value === undefined || value === null || value === '') return undefined;
 
@@ -37,10 +43,18 @@ export class IsotopePublishDTO {
     @IsBigInt({ message: 'период полураспада должен быть положительным целым числом' })
     halfLife: bigint;
 
+    @ApiProperty({
+        example: false,
+        description: 'Является ли альфа-излучателем',
+    })
     @Transform(({ value }) => ['on', 'true'].includes(value))
     @IsBoolean()
     isAlpha: boolean = false;
 
+    @ApiProperty({
+        example: 'Описание изотопа',
+        description: 'Описание изотопа',
+    })
     @IsNotEmpty()
     @IsString()
     description: string;

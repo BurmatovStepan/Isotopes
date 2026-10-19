@@ -164,8 +164,8 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"parentStyle": true,
-											"left": 397,
-											"top": 253,
+											"left": 301,
+											"top": 237,
 											"width": 71.419921875,
 											"height": 13,
 											"text": "«interface»"
@@ -178,8 +178,8 @@
 											},
 											"font": "Arial;13;1",
 											"parentStyle": true,
-											"left": 365,
-											"top": 263,
+											"left": 317,
+											"top": 255,
 											"width": 60.97265625,
 											"height": 13,
 											"text": "API users"
@@ -193,8 +193,8 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"parentStyle": true,
-											"left": 64,
-											"top": 32,
+											"left": -32,
+											"top": 16,
 											"width": 88.86083984375,
 											"height": 13,
 											"text": "(from Backend)"
@@ -208,16 +208,16 @@
 											"visible": false,
 											"font": "Arial;13;0",
 											"parentStyle": true,
-											"left": 64,
-											"top": 32,
+											"left": -32,
+											"top": 16,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 360,
-									"top": 256,
+									"left": 312,
+									"top": 248,
 									"width": 70.97265625,
 									"height": 25,
 									"stereotypeLabel": {
@@ -245,8 +245,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 376,
-									"top": 230,
+									"left": 328,
+									"top": 222,
 									"width": 144.419921875,
 									"height": 10
 								},
@@ -262,8 +262,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 120,
-									"top": -48,
+									"left": 72,
+									"top": -56,
 									"width": 10,
 									"height": 10
 								},
@@ -279,8 +279,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 376,
-									"top": 240,
+									"left": 328,
+									"top": 232,
 									"width": 144.419921875,
 									"height": 10
 								},
@@ -296,8 +296,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": true,
-									"left": 120,
-									"top": -48,
+									"left": 72,
+									"top": -56,
 									"width": 10,
 									"height": 10
 								}
@@ -305,8 +305,8 @@
 							"font": "Arial;13;0",
 							"parentStyle": false,
 							"containerChangeable": true,
-							"left": 360,
-							"top": 232,
+							"left": 312,
+							"top": 224,
 							"width": 69.97265625,
 							"height": 49,
 							"stereotypeDisplay": "icon",
@@ -350,7 +350,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 354,
+									"left": 324,
 									"top": 303,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -372,8 +372,8 @@
 									"visible": null,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 340,
-									"top": 298,
+									"left": 309,
+									"top": 302,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -394,8 +394,8 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"parentStyle": false,
-									"left": 381,
-									"top": 314,
+									"left": 353,
+									"top": 306,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -414,7 +414,7 @@
 								"$ref": "AAAAAAGg/DBNKjUIPY8="
 							},
 							"lineStyle": 1,
-							"points": "346:375;390.8421052631579:256",
+							"points": "333:375;345.05263157894734:248",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGg/UJgBOh5MsU="
@@ -4641,7 +4641,7 @@
 											"top": 79,
 											"width": 127,
 											"height": 39,
-											"text": "Страница создания черновика изотопа",
+											"text": "Страница добавления изотопа",
 											"wordWrap": true
 										},
 										{
@@ -4887,104 +4887,6 @@
 						},
 						{
 							"_type": "UMLDependencyView",
-							"_id": "AAAAAAGhK6K4/6ypcK0=",
-							"_parent": {
-								"$ref": "AAAAAAGg/B5++zSThW4="
-							},
-							"model": {
-								"$ref": "AAAAAAGhK6K4/6ynDZk="
-							},
-							"subViews": [
-								{
-									"_type": "EdgeLabelView",
-									"_id": "AAAAAAGhK6K4/6yqEqQ=",
-									"_parent": {
-										"$ref": "AAAAAAGhK6K4/6ypcK0="
-									},
-									"model": {
-										"$ref": "AAAAAAGhK6K4/6ynDZk="
-									},
-									"visible": false,
-									"font": "Arial;13;0",
-									"parentStyle": false,
-									"left": 422,
-									"top": 171,
-									"height": 13,
-									"alpha": 1.5707963267948966,
-									"distance": 15,
-									"hostEdge": {
-										"$ref": "AAAAAAGhK6K4/6ypcK0="
-									},
-									"edgePosition": 1
-								},
-								{
-									"_type": "EdgeLabelView",
-									"_id": "AAAAAAGhK6K4/6yrRcE=",
-									"_parent": {
-										"$ref": "AAAAAAGhK6K4/6ypcK0="
-									},
-									"model": {
-										"$ref": "AAAAAAGhK6K4/6ynDZk="
-									},
-									"visible": null,
-									"font": "Arial;13;0",
-									"parentStyle": false,
-									"left": 428,
-									"top": 157,
-									"height": 13,
-									"alpha": 1.5707963267948966,
-									"distance": 30,
-									"hostEdge": {
-										"$ref": "AAAAAAGhK6K4/6ypcK0="
-									},
-									"edgePosition": 1
-								},
-								{
-									"_type": "EdgeLabelView",
-									"_id": "AAAAAAGhK6K5AKyssPI=",
-									"_parent": {
-										"$ref": "AAAAAAGhK6K4/6ypcK0="
-									},
-									"model": {
-										"$ref": "AAAAAAGhK6K4/6ynDZk="
-									},
-									"visible": false,
-									"font": "Arial;13;0",
-									"parentStyle": false,
-									"left": 409,
-									"top": 198,
-									"height": 13,
-									"alpha": -1.5707963267948966,
-									"distance": 15,
-									"hostEdge": {
-										"$ref": "AAAAAAGhK6K4/6ypcK0="
-									},
-									"edgePosition": 1
-								}
-							],
-							"font": "Arial;13;0",
-							"parentStyle": false,
-							"head": {
-								"$ref": "AAAAAAGg/UOKQeif5ZQ="
-							},
-							"tail": {
-								"$ref": "AAAAAAGhK56+colVnxA="
-							},
-							"lineStyle": 1,
-							"points": "305:142;528.3681640625:241.41514756944446",
-							"showVisibility": true,
-							"nameLabel": {
-								"$ref": "AAAAAAGhK6K4/6yqEqQ="
-							},
-							"stereotypeLabel": {
-								"$ref": "AAAAAAGhK6K4/6yrRcE="
-							},
-							"propertyLabel": {
-								"$ref": "AAAAAAGhK6K5AKyssPI="
-							}
-						},
-						{
-							"_type": "UMLDependencyView",
 							"_id": "AAAAAAGhK6LCza2Jqk0=",
 							"_parent": {
 								"$ref": "AAAAAAGg/B5++zSThW4="
@@ -5209,7 +5111,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 48,
-											"top": -168,
+											"top": -152,
 											"height": 13
 										},
 										{
@@ -5221,10 +5123,10 @@
 											"font": "Arial;13;1",
 											"parentStyle": true,
 											"left": 165,
-											"top": 79,
-											"width": 135,
-											"height": 39,
-											"text": "Страница публикации черновика изотопа",
+											"top": 87,
+											"width": 143,
+											"height": 26,
+											"text": "Страница аутентификации",
 											"wordWrap": true
 										},
 										{
@@ -5237,7 +5139,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 48,
-											"top": -168,
+											"top": -152,
 											"width": 149.78564453125,
 											"height": 13,
 											"text": "(from React приложение)"
@@ -5252,7 +5154,7 @@
 											"font": "Arial;13;0",
 											"parentStyle": true,
 											"left": 48,
-											"top": -168,
+											"top": -152,
 											"horizontalAlignment": 1,
 											"wordWrap": true
 										}
@@ -5260,9 +5162,9 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 160,
-									"top": 72,
-									"width": 145,
-									"height": 51,
+									"top": 80,
+									"width": 153,
+									"height": 38,
 									"stereotypeLabel": {
 										"$ref": "AAAAAAGhK56+c4lXs2c="
 									},
@@ -5288,8 +5190,8 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 160,
-									"top": 123,
-									"width": 145,
+									"top": 118,
+									"width": 153,
 									"height": 10
 								},
 								{
@@ -5304,8 +5206,8 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 160,
-									"top": 133,
-									"width": 145,
+									"top": 128,
+									"width": 153,
 									"height": 10
 								},
 								{
@@ -5321,7 +5223,7 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 24,
-									"top": -104,
+									"top": -96,
 									"width": 10,
 									"height": 10
 								},
@@ -5338,7 +5240,7 @@
 									"font": "Arial;13;0",
 									"parentStyle": true,
 									"left": 24,
-									"top": -104,
+									"top": -96,
 									"width": 10,
 									"height": 10
 								}
@@ -5350,9 +5252,9 @@
 							"parentStyle": false,
 							"containerChangeable": true,
 							"left": 160,
-							"top": 72,
-							"width": 144,
-							"height": 71,
+							"top": 80,
+							"width": 152,
+							"height": 58,
 							"nameCompartment": {
 								"$ref": "AAAAAAGhK56+c4lWmEI="
 							},
@@ -5368,6 +5270,104 @@
 							},
 							"templateParameterCompartment": {
 								"$ref": "AAAAAAGhK56+c4leUpY="
+							}
+						},
+						{
+							"_type": "UMLDependencyView",
+							"_id": "AAAAAAGhU2pxpepnirs=",
+							"_parent": {
+								"$ref": "AAAAAAGg/B5++zSThW4="
+							},
+							"model": {
+								"$ref": "AAAAAAGhU2pxpeplH9Q="
+							},
+							"subViews": [
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAGhU2pxpepoUbg=",
+									"_parent": {
+										"$ref": "AAAAAAGhU2pxpepnirs="
+									},
+									"model": {
+										"$ref": "AAAAAAGhU2pxpeplH9Q="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 308,
+									"top": 167,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAGhU2pxpepnirs="
+									},
+									"edgePosition": 1
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAGhU2pxpepp+HE=",
+									"_parent": {
+										"$ref": "AAAAAAGhU2pxpepnirs="
+									},
+									"model": {
+										"$ref": "AAAAAAGhU2pxpeplH9Q="
+									},
+									"visible": null,
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 320,
+									"top": 157,
+									"height": 13,
+									"alpha": 1.5707963267948966,
+									"distance": 30,
+									"hostEdge": {
+										"$ref": "AAAAAAGhU2pxpepnirs="
+									},
+									"edgePosition": 1
+								},
+								{
+									"_type": "EdgeLabelView",
+									"_id": "AAAAAAGhU2pxpepqwM8=",
+									"_parent": {
+										"$ref": "AAAAAAGhU2pxpepnirs="
+									},
+									"model": {
+										"$ref": "AAAAAAGhU2pxpeplH9Q="
+									},
+									"visible": false,
+									"font": "Arial;13;0",
+									"parentStyle": false,
+									"left": 285,
+									"top": 186,
+									"height": 13,
+									"alpha": -1.5707963267948966,
+									"distance": 15,
+									"hostEdge": {
+										"$ref": "AAAAAAGhU2pxpepnirs="
+									},
+									"edgePosition": 1
+								}
+							],
+							"font": "Arial;13;0",
+							"parentStyle": false,
+							"head": {
+								"$ref": "AAAAAAGg/TQY6sSt6QQ="
+							},
+							"tail": {
+								"$ref": "AAAAAAGhK56+colVnxA="
+							},
+							"lineStyle": 1,
+							"points": "260:139;334.986328125:228.84111328125",
+							"showVisibility": true,
+							"nameLabel": {
+								"$ref": "AAAAAAGhU2pxpepoUbg="
+							},
+							"stereotypeLabel": {
+								"$ref": "AAAAAAGhU2pxpepp+HE="
+							},
+							"propertyLabel": {
+								"$ref": "AAAAAAGhU2pxpepqwM8="
 							}
 						}
 					]
@@ -5851,7 +5851,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGhK546BIbNuTM="
 							},
-							"name": "Страница создания черновика изотопа",
+							"name": "Страница добавления изотопа",
 							"ownedElements": [
 								{
 									"_type": "UMLDependency",
@@ -5897,7 +5897,7 @@
 							"_parent": {
 								"$ref": "AAAAAAGhK546BIbNuTM="
 							},
-							"name": "Страница публикации черновика изотопа",
+							"name": "Страница аутентификации",
 							"ownedElements": [
 								{
 									"_type": "UMLDependency",
@@ -5910,6 +5910,19 @@
 									},
 									"target": {
 										"$ref": "AAAAAAGg/UOKQeidksA="
+									}
+								},
+								{
+									"_type": "UMLDependency",
+									"_id": "AAAAAAGhU2pxpeplH9Q=",
+									"_parent": {
+										"$ref": "AAAAAAGhK56+colTSDs="
+									},
+									"source": {
+										"$ref": "AAAAAAGhK56+colTSDs="
+									},
+									"target": {
+										"$ref": "AAAAAAGg/TQY6MSrAbg="
 									}
 								}
 							]

@@ -310,7 +310,7 @@ export class IsotopeService {
         return toIsotopeView(dto);
     }
 
-    async like(
+    async setLike(
         userId: number,
         isotopeId: number,
         action: LikeAction,
